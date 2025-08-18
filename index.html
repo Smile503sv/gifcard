@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DC‑CARDSV BP</title>
+  <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
   <header class="header">
@@ -19,21 +19,21 @@
     </div>
   </header>
 
-  <main id="main-content">
+  <main>
     <section id="productos" class="cards-section">
       <div class="container" id="products-container"></div>
     </section>
+
     <section id="contacto" class="info-section">
-      <h2>Contacto</h2>
-      <p>¿Tienes preguntas? Escríbenos por WhatsApp:</p>
-      <a href="https://wa.me/50371234567" target="_blank" class="btn-whatsapp">WhatsApp</a>
-    </section>
-    <section id="cuenta" class="info-section">
-      <h2>Mi Cuenta</h2>
-      <div class="account-buttons">
-        <button id="btn-register">Registrarse</button>
-        <button id="btn-login">Iniciar Sesión</button>
+      <div class="container">
+        <h2>Contacto</h2>
+        <p>¿Tienes preguntas? Escríbenos por WhatsApp o correo.</p>
+        <a href="https://wa.me/50371234567" class="btn-whatsapp" target="_blank">WhatsApp</a>
       </div>
+    </section>
+
+    <section id="cuenta" class="info-section">
+      <div class="container" id="cuenta"></div>
     </section>
   </main>
 
@@ -41,30 +41,29 @@
 
   <aside class="cart-panel" id="cart-panel">
     <div class="cart-header">
-      Carrito
+      <strong>Carrito</strong>
       <button id="cart-close">&times;</button>
     </div>
     <div class="cart-items" id="cart-items"></div>
     <div class="cart-total" id="cart-total">Total: $0 USD</div>
-    <button id="pay-wa" class="btn-pay">Pagar por WhatsApp</button>
+    <button class="btn-pay" id="pay-wa">Pagar por WhatsApp</button>
   </aside>
   <div class="cart-bg" id="cart-bg"></div>
 
-  <div class="modal" id="auth-modal">
+  <div class="modal" id="modal-auth">
     <div class="modal-content">
+      <span class="modal-close" onclick="closeAuth()">&times;</span>
       <h3 id="modal-title">Iniciar Sesión</h3>
-      <form id="auth-form">
-        <input type="email" id="auth-email" placeholder="Correo electrónico" required />
-        <button type="submit" class="btn-modal" id="auth-submit">Continuar</button>
-        <p id="switch-auth">¿No tienes cuenta?
-          <span id="toggle-auth">Regístrate</span>
-        </p>
+      <form onsubmit="submitAuth(event)">
+        <input type="email" id="auth-email" placeholder="Correo electrónico" required>
+        <button type="submit" class="btn">Continuar</button>
       </form>
-      <button class="modal-close" id="modal-close">&times;</button>
     </div>
   </div>
 
-  <footer class="footer">© 2025 DC‑CARDSV BP — hecho con ❤️</footer>
+  <footer class="footer">
+    © 2025 DC‑CARDSV BP — hecho con ❤️
+  </footer>
 
   <script src="js/app.js"></script>
 </body>
