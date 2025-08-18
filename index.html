@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF‑8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DC-CARDSV BP</title>
+  <title>DC‑CARDSV BP</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <header class="header">
     <div class="container">
-      <span class="logo">DC-CARDSV BP</span>
+      <span class="logo">DC‑CARDSV BP</span>
       <nav class="navbar">
-        <a href="#inicio" class="active">Inicio</a>
-        <a href="#productos">Productos</a>
+        <a href="#productos" class="active">Productos</a>
         <a href="#contacto">Contacto</a>
         <a href="#cuenta">Mi Cuenta</a>
       </nav>
     </div>
   </header>
 
-  <section class="cards-section" id="productos">
-    <div class="container" id="products-container">
-      <!-- Productos se inyectan aquí -->
-    </div>
-  </section>
+  <main>
+    <section id="productos" class="cards-section">
+      <div class="container" id="products-container"></div>
+    </section>
+  </main>
 
   <div class="cart-btn-float" id="cart-btn">&#128722;</div>
+
   <aside class="cart-panel" id="cart-panel">
     <div class="cart-header">
       Carrito
       <button class="cart-close" id="cart-close">&times;</button>
     </div>
     <div class="cart-items" id="cart-items"></div>
-    <div class="cart-total" id="cart-total"></div>
+    <div class="cart-total" id="cart-total">Total: $0 USD</div>
     <button class="btn-pay" id="pay-wa">Pagar por WhatsApp</button>
   </aside>
   <div class="cart-bg" id="cart-bg"></div>
 
   <footer class="footer">
-    © 2025 DC-CARDSV BP — hecho con ❤️
+    © 2025 DC‑CARDSV BP — hecho con ❤️
   </footer>
 
   <script src="app.js"></script>
