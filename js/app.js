@@ -1,86 +1,99 @@
 const productos = [
-  { cod: 'play', nombre: 'PlayStation Store', img: 'https://i.ebayimg.com/images/g/8kEAAOSw4H5oBwax/s-l1600.webp', descrip: '¡Recarga tu cuenta PlayStation y compra juegos, suscripciones, DLC y más en segundos!' },
-  { cod: 'xbox', nombre: 'Xbox Gift Card', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-81.webp', descrip: 'Añade saldo a tu cuenta Xbox para comprar juegos, contenido y más.' },
-  { cod: 'itunes', nombre: 'Apple / iTunes', img: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg', descrip: 'Compra apps, juegos, música, películas y más en App Store y iTunes.' },
-  { cod: 'gplay', nombre: 'Google Play', img: 'https://cdn.topuplive.com/uploads/images/goods/20240911/1726048096_PpXJIUWYpb.webp', descrip: 'Añade saldo a tu cuenta Google Play y compra apps, juegos, películas...' },
-  { cod: 'nintendo', nombre: 'Nintendo eShop', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-79.webp', descrip: 'Compra juegos, contenido extra y más para Nintendo Switch, 3DS y Wii U.' },
-  { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn.topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Recarga diamantes para Free Fire al instante.' },
-  { cod: 'roblox', nombre: 'Roblox Gift Card-US', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-153.webp', descrip: 'Agrega Robux o membresía Premium a tu cuenta Roblox.' },
-  { cod: 'steam', nombre: 'Steam Wallet', img: 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', descrip: 'Saldo para tu cuenta Steam. Compra juegos, DLCs y contenido.' },
-  { cod: 'amazon', nombre: 'Amazon Gift Card', img: 'https://i.ebayimg.com/images/g/luAAAeSwUqdoZwUW/s-l1600.webp', descrip: 'Compra millones de productos en Amazon con esta tarjeta.' },
-  { cod: 'fortnite', nombre: 'Fortnite V-Bucks', img: 'https://net-revolution.com/wp-content/uploads/Recargar-Fortnite-desde-Venezuela.png', descrip: 'Consigue V-Bucks para Fortnite. Entrega inmediata.' },
+  { cod: 'play', nombre: 'PlayStation Store', img: 'https://i.ebayimg.com/images/g/8kEAAOSw4H5oBwax/s-l1600.webp', descrip: 'Recarga tu cuenta PlayStation y compra contenido.' },
+  { cod: 'xbox', nombre: 'Xbox Gift Card', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-81.webp', descrip: 'Recarga saldo para Xbox y suscripciones.' },
+  { cod: 'itunes', nombre: 'Apple / iTunes', img: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg', descrip: 'Compra apps, música, películas y más en Apple.' },
+  { cod: 'gplay', nombre: 'Google Play', img: 'https://cdn.topuplive.com/uploads/images/goods/20240911/1726048096_PpXJIUWYpb.webp', descrip: 'Añade saldo a Google Play para apps y contenido.' },
+  { cod: 'nintendo', nombre: 'Nintendo eShop', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-79.webp', descrip: 'Descarga juegos y contenido para Nintendo.' },
+  { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn.topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Recarga diamantes para Free Fire.' },
+  { cod: 'roblox', nombre: 'Roblox Gift Card-US', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-153.webp', descrip: 'Compra Robux o Premium en Roblox.' },
+  { cod: 'steam', nombre: 'Steam Wallet', img: 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', descrip: 'Añade saldo a Steam para juegos y DLC.' },
+  { cod: 'amazon', nombre: 'Amazon Gift Card', img: 'https://i.ebayimg.com/images/g/luAAAeSwUqdoZwUW/s-l1600.webp', descrip: 'Compra millones de productos en Amazon.' },
+  { cod: 'fortnite', nombre: 'Fortnite V-Bucks', img: 'https://net-revolution.com/wp-content/uploads/Recargar-Fortnite-desde-Venezuela.png', descrip: 'Consigue V-Bucks para Fortnite.' },
   { cod: 'netflix', nombre: 'Netflix Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Netflix.webp', descrip: 'Paga tu suscripción Netflix o regálala.' },
-  { cod: 'visa', nombre: 'Visa Prepaid', img: 'https://i.ebayimg.com/images/g/oLsAAeSwyPZocSrH/s-l1600.webp', descrip: 'Tarjeta prepago Visa para compras en línea.' },
-  { cod: 'pubg', nombre: 'PUBG G-COIN', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-154.webp', descrip: 'Recarga G-COIN para contenido en PUBG.' },
+  { cod: 'visa', nombre: 'Visa Prepaid', img: 'https://i.ebayimg.com/images/g/oLsAAeSwyPZocSrH/s-l1600.webp', descrip: 'Tarjeta prepago Visa para comprar online.' },
+  { cod: 'pubg', nombre: 'PUBG G-COIN', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-154.webp', descrip: 'Recarga G-Coins para PUBG.' },
   { cod: 'fifa', nombre: 'FC 25 Coins', img: 'https://cdn.topuplive.com/uploads/images/goods/20250523/1747992886_jOcre8DD1t.webp', descrip: 'Monedas para EA Sports FC 25 Ultimate Team.' },
-  { cod: 'brawl', nombre: 'Brawl Stars', img: 'https://cdn.topuplive.com/uploads/images/goods/20250521/1747819357_UA0cSxeWlT.webp', descrip: 'Recarga gemas para Brawl Stars.' },
+  { cod: 'brawl', nombre: 'Brawl Stars', img: 'https://cdn.topuplive.com/uploads/images/goods/20250521/1747819357_UA0cSxeWlT.webp', descrip: 'Gemas para Brawl Stars.' },
   { cod: 'apex', nombre: 'Apex Legends Mobile', img: 'https://net-revolution.com/wp-content/uploads/Recargar-Apex-Legends-Venezuela.jpg', descrip: 'Monedas para Apex Legends Mobile.' },
-  { cod: 'crypto', nombre: 'Crypto Voucher (US)', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Crypto-Voucher.webp', descrip: 'Compra criptomonedas fácilmente con este cupón.' },
-  { cod: 'binance', nombre: 'Binance Gift Card (Global)', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Binance-Gift-Card.webp', descrip: 'Saldo directo en tu cuenta Binance.' },
+  { cod: 'crypto', nombre: 'Crypto Voucher (US)', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Crypto-Voucher.webp', descrip: 'Códigos para comprar criptomonedas.' },
+  { cod: 'binance', nombre: 'Binance Gift Card (Global)', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Binance-Gift-Card.webp', descrip: 'Regala saldo en Binance.' },
   { cod: 'eneba', nombre: 'Eneba Gift Card (US)', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Eneba.webp', descrip: 'Compra juegos digitales en Eneba.' },
-  { cod: 'lol', nombre: 'League of Legends Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/League-of-Legends.webp', descrip: 'Compra Riot Points (LoL).' },
-  { cod: 'twitch', nombre: 'Twitch Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Twitch.webp', descrip: 'Tarjeta para Twitch (suscripciones/cheers).' },
+  { cod: 'lol', nombre: 'League of Legends Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/League-of-Legends.webp', descrip: 'RP para League of Legends.' },
+  { cod: 'twitch', nombre: 'Twitch Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Twitch.webp', descrip: 'Bits o suscripción para Twitch.' },
   { cod: 'razer', nombre: 'Razer Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Razer.webp', descrip: 'Razer Gold para gamers.' },
-  { cod: 'target', nombre: 'Target Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Target.webp', descrip: 'Compra en Target con esta tarjeta.' },
-  { cod: 'ebay', nombre: 'eBay Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/eBay.webp', descrip: 'Compra en eBay con tarjeta de regalo.' }
+  { cod: 'target', nombre: 'Target Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Target.webp', descrip: 'Compra en Target con tarjeta de regalo.' },
+  { cod: 'ebay', nombre: 'eBay Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/eBay.webp', descrip: 'Compra en eBay con esta tarjeta.' }
 ];
 
 const montos = [10, 25, 50, 75, 100, 200, 500];
 let carrito = [];
 
 window.addEventListener('DOMContentLoaded', () => {
+  renderProductos();
+  setupNav();
+  document.getElementById('cart-btn').onclick = () => toggleCart(true);
+  document.getElementById('cart-close').onclick = () => toggleCart(false);
+  document.getElementById('cart-bg').onclick = () => toggleCart(false);
+  document.getElementById('pay-wa').onclick = pagarWhatsApp;
+});
+
+function renderProductos() {
   const cont = document.getElementById('products-container');
+  cont.innerHTML = '';
   productos.forEach((prod, i) => {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
-      <img src="${prod.img}">
+      <img src="${prod.img}" alt="${prod.nombre}">
       <h3>${prod.nombre}</h3>
       <p>${prod.descrip}</p>
       <select id="monto-${i}">${montos.map(m => `<option value="${m}">$${m}</option>`).join('')}</select>
-      <button onclick="agregarCarrito(${i})">Agregar al carrito</button>
+      <button onclick="agregarAlCarrito(${i})">Agregar al carrito</button>
     `;
     cont.appendChild(card);
   });
-
-  document.getElementById('cart-btn').onclick = showCart;
-  document.getElementById('cart-close').onclick = closeCart;
-  document.getElementById('cart-bg').onclick = closeCart;
-  document.getElementById('pay-wa').onclick = pagarWhatsApp;
-});
-
-function agregarCarrito(idx) {
-  const monto = Number(document.getElementById(`monto-${idx}`).value);
-  const prod = productos[idx];
-  carrito.push({ nombre: prod.nombre, monto });
-  renderCart();
 }
 
-function renderCart() {
+function agregarAlCarrito(idx) {
+  const monto = Number(document.getElementById(`monto-${idx}`).value);
+  carrito.push({ nombre: productos[idx].nombre, monto });
+  actualizarCarrito();
+}
+
+function actualizarCarrito() {
   const items = document.getElementById('cart-items');
   const totalDiv = document.getElementById('cart-total');
   items.innerHTML = '';
   let total = 0;
-  carrito.forEach((it, i) => {
-    total += it.monto;
+  carrito.forEach(item => {
+    total += item.monto;
     const div = document.createElement('div');
     div.className = 'cart-item';
-    div.textContent = `${it.nombre} - $${it.monto}`;
+    div.textContent = `${item.nombre} - $${item.monto}`;
     items.appendChild(div);
   });
   totalDiv.textContent = `Total: $${total} USD`;
-  document.getElementById('cart-panel').classList.add('open');
-  document.getElementById('cart-bg').classList.add('open');
 }
 
-function closeCart() {
-  document.getElementById('cart-panel').classList.remove('open');
-  document.getElementById('cart-bg').classList.remove('open');
+function toggleCart(open) {
+  document.getElementById('cart-panel').classList.toggle('open', open);
+  document.getElementById('cart-bg').classList.toggle('open', open);
 }
 
 function pagarWhatsApp() {
   if (!carrito.length) return alert('Carrito vacío');
   let msg = 'Hola, quiero comprar:\n';
-  carrito.forEach(it => msg += `- ${it.nombre} $${it.monto}\n`);
+  carrito.forEach(item => msg += `- ${item.nombre} $${item.monto}\n`);
   window.open(`https://wa.me/50371234567?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function setupNav() {
+  document.querySelectorAll('.navbar a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.navbar a').forEach(x => x.classList.remove('active'));
+      a.classList.add('active');
+      document.getElementById('productos').style.display = (a.getAttribute('href') === '#productos') ? 'block' : 'none';
+    });
+  });
 }
