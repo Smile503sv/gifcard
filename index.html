@@ -1,62 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF‑8">
-  <meta name="viewport" content="width=device-width, initial‑scale=1.0">
-  <meta name="description" content="Compra códigos digitales: Xbox, PSN, Steam y más. Entrega inmediata por WhatsApp o email.">
-  <title>gifcard‑bp | Tienda de Códigos Digitales</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF‑8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gifcard‑BP – Tarjetas Digitales</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
-  <header class="navbar">
-    <div class="navbar-container">
-      <span class="navbar-logo">gifcard‑bp</span>
-      <nav>
-        <ul class="navbar-menu" id="navbar-menu">
-          <li><a href="#inicio" data-page="inicio">Inicio</a></li>
-          <li><a href="#productos" data-page="productos">Productos</a></li>
-          <li><a href="#contacto" data-page="contacto">Contacto</a></li>
-          <li><a id="account-link" style="cursor:pointer;">Mi cuenta</a></li>
-        </ul>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">gifcard‑bp</h1>
+      <nav class="navbar">
+        <a href="#inicio">Inicio</a>
+        <a href="#productos">Productos</a>
+        <a href="#contacto">Contacto</a>
+        <a href="#cuenta">Mi cuenta</a>
       </nav>
     </div>
   </header>
 
-  <section class="banner" id="banner">
-    <h1>¡Bienvenido a gifcard‑bp!</h1>
-    <p>Compra códigos de Xbox, PlayStation, Free Fire, Steam y más. Entrega inmediata por WhatsApp o email.</p>
-    <div class="carousel-container">
-      <div class="carousel-slide" id="carousel-slide"></div>
-      <div class="carousel-dots" id="carousel-dots"></div>
+  <section id="productos" class="cards-section">
+    <div class="container" id="products-container">
+      <!-- Aquí se inyectarán las tarjetas desde JS -->
     </div>
   </section>
 
-  <main id="main-content"></main>
-
-  <button class="cart-btn-float" id="cart-btn" title="Ver carrito">&#128722;</button>
-
+  <div class="cart-btn-float" id="cart-btn">&#128722;</div>
   <aside class="cart-panel" id="cart-panel">
     <div class="cart-header">
-      <h2>Carrito de compras</h2>
-      <button class="cart-close-btn" id="close-cart" title="Cerrar">&#10005;</button>
+      Carrito
+      <button class="cart-close" id="cart-close">&times;</button>
     </div>
     <div class="cart-items" id="cart-items"></div>
     <div class="cart-total" id="cart-total"></div>
-    <div class="cart-actions">
-      <button class="pay-ws-btn" onclick="pagarWhatsApp()">Pagar por WhatsApp</button>
-      <button class="pay-bac-btn" onclick="pagarBAC()">Pagar con BAC</button>
-    </div>
+    <button class="btn-pay" id="pay-wa">Pagar por WhatsApp</button>
   </aside>
-  <div class="cart-panel-bg" id="cart-bg"></div>
+  <div class="cart-bg" id="cart-bg"></div>
 
   <footer class="footer">
-    &copy; 2025 gifcard‑bp<br>
-    Entrega inmediata por correo o WhatsApp.<br>
-    <small>Diseño inspirado en tiendas líderes, hecho con ❤️ para ti.</small>
+    &copy; 2025 gifcard‑bp — hecho con ❤️
   </footer>
 
   <script src="js/app.js" defer></script>
 </body>
 </html>
-
