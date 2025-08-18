@@ -12,53 +12,51 @@
     <div class="container">
       <span class="logo">DC‑CARDSV BP</span>
       <nav class="navbar">
-        <a href="#productos" class="active">Productos</a>
-        <a href="#contacto">Contacto</a>
-        <a href="#cuenta">Mi Cuenta</a>
+        <a href="#" onclick="showSection('productos')" class="active">Productos</a>
+        <a href="#" onclick="showSection('contacto')">Contacto</a>
+        <a href="#" onclick="showSection('cuenta')">Mi Cuenta</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section id="productos" class="cards-section">
+    <section id="productos" class="section">
       <div class="container" id="products-container"></div>
     </section>
-
-    <section id="contacto" class="info-section">
+    <section id="contacto" class="section" style="display:none">
       <div class="container">
         <h2>Contacto</h2>
         <p>¿Tienes preguntas? Escríbenos por WhatsApp.</p>
         <a href="https://wa.me/50371234567" class="btn-whatsapp" target="_blank">WhatsApp</a>
       </div>
     </section>
-
-    <section id="cuenta" class="info-section">
+    <section id="cuenta" class="section" style="display:none">
       <div class="container" id="cuenta-content"></div>
     </section>
   </main>
 
-  <button class="cart-btn-float" id="cart-btn">🛒</button>
+  <button class="cart-btn-float" id="cart-btn" onclick="toggleCart(true)">🛒</button>
   <aside class="cart-panel" id="cart-panel">
     <div class="cart-header">
       <strong>Carrito</strong>
-      <button id="cart-close">&times;</button>
+      <button onclick="toggleCart(false)">&times;</button>
     </div>
     <div class="cart-items" id="cart-items"></div>
     <div class="cart-total" id="cart-total">Total: $0 USD</div>
-    <button class="btn-pay" id="checkout-btn">Checkout / WhatsApp</button>
+    <button class="btn-pay" onclick="checkout()">Checkout (WhatsApp)</button>
   </aside>
-  <div class="cart-bg" id="cart-bg"></div>
+  <div class="cart-bg" id="cart-bg" onclick="toggleCart(false)"></div>
 
   <div class="modal" id="auth-modal">
     <div class="modal-content">
-      <span class="modal-close" onclick="closeAuth()">&times;</span>
+      <span onclick="closeAuth()" class="modal-close">&times;</span>
       <h3 id="modal-title">Iniciar Sesión</h3>
       <form onsubmit="submitAuth(event)">
-        <input type="email" id="auth-email" placeholder="Correo electrónico" required>
-        <input type="password" id="auth-pass" placeholder="Contraseña" required>
+        <input type="email" id="auth-email" placeholder="Correo electrónico" required/>
+        <input type="password" id="auth-pass" placeholder="Contraseña" required/>
         <button type="submit" class="btn">Continuar</button>
-        <p id="toggle-auth">¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span></p>
       </form>
+      <p id="toggle-auth">¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span></p>
     </div>
   </div>
 
