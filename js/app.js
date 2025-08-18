@@ -25,7 +25,7 @@ const productos = [
   { cod: 'ebay', nombre: 'eBay Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/eBay.webp', descrip: 'Compra en eBay con esta tarjeta.' }
 ];
 
-const montos = [10, 25, 50, 75, 100, 200, 500];
+const montos = [10,25,50,75,100,200,500];
 let carrito = [];
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -34,66 +34,87 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('cart-btn').onclick = () => toggleCart(true);
   document.getElementById('cart-close').onclick = () => toggleCart(false);
   document.getElementById('cart-bg').onclick = () => toggleCart(false);
-  document.getElementById('pay-wa').onclick = pagarWhatsApp;
+  document.getElementById('pay-wa').onclick = comprarWhatsApp();
+  document.getElementById('btn-register').onclick = () => openAuth('register');
+  document.getElementById('btn-login').onclick = () => openAuth('login');
+  document.getElementById('modal-close').onclick = closeAuth();
+  document.getElementById('auth-form').onsubmit = submitAuth();
 });
 
 function renderProductos() {
   const cont = document.getElementById('products-container');
   cont.innerHTML = '';
-  productos.forEach((prod, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
+  productos.forEach((prod,i) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
       <img src="${prod.img}" alt="${prod.nombre}">
       <h3>${prod.nombre}</h3>
       <p>${prod.descrip}</p>
-      <select id="monto-${i}">${montos.map(m => `<option value="${m}">$${m}</option>`).join('')}</select>
+      <select id="monto-${i}">${montos.map(m=>`<option value="${m}">$${m}</option>`).join('')}</select>
       <button onclick="agregarAlCarrito(${i})">Agregar al carrito</button>
     `;
-    cont.appendChild(card);
+    cont.appendChild(div);
   });
 }
 
-function agregarAlCarrito(idx) {
-  const monto = Number(document.getElementById(`monto-${idx}`).value);
-  carrito.push({ nombre: productos[idx].nombre, monto });
+function agregarAlCarrito(i) {
+  const m = Number(document.getElementById(`monto-${i}`).value);
+  carrito.push({ nombre: productos[i].nombre, monto: m });
   actualizarCarrito();
 }
 
 function actualizarCarrito() {
   const items = document.getElementById('cart-items');
-  const totalDiv = document.getElementById('cart-total');
+  const ttl = document.getElementById('cart-total');
   items.innerHTML = '';
-  let total = 0;
-  carrito.forEach(item => {
-    total += item.monto;
-    const div = document.createElement('div');
-    div.className = 'cart-item';
-    div.textContent = `${item.nombre} - $${item.monto}`;
-    items.appendChild(div);
+  let tot=0;
+  carrito.forEach(it => {
+    tot += it.monto;
+    const d = document.createElement('div');
+    d.className = 'cart-item';
+    d.textContent = `${it.nombre} - $${it.monto}`;
+    items.appendChild(d);
   });
-  totalDiv.textContent = `Total: $${total} USD`;
+  ttl.textContent = `Total: $${tot} USD`;
 }
 
 function toggleCart(open) {
-  document.getElementById('cart-panel').classList.toggle('open', open);
-  document.getElementById('cart-bg').classList.toggle('open', open);
+  document.getElementById('cart-panel').classList.toggle('open',open);
+  document.getElementById('cart-bg').classList.toggle('open',open);
 }
 
-function pagarWhatsApp() {
-  if (!carrito.length) return alert('Carrito vacío');
-  let msg = 'Hola, quiero comprar:\n';
-  carrito.forEach(item => msg += `- ${item.nombre} $${item.monto}\n`);
-  window.open(`https://wa.me/50371234567?text=${encodeURIComponent(msg)}`, '_blank');
+function comprarWhatsApp() {
+  if(!carrito.length) return alert('Carrito vacío');
+  let msg="Hola, quiero comprar:\n";
+  carrito.forEach(it=>msg+=`- ${it.nombre} $${it.monto}\n`);
+  window.open(`https://wa.me/50371234567?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-function setupNav() {
-  document.querySelectorAll('.navbar a').forEach(a => {
-    a.addEventListener('click', e => {
+function setupNav(){
+  document.querySelectorAll('.navbar a').forEach(el => {
+    el.addEventListener('click',e=>{
       e.preventDefault();
-      document.querySelectorAll('.navbar a').forEach(x => x.classList.remove('active'));
-      a.classList.add('active');
-      document.getElementById('productos').style.display = (a.getAttribute('href') === '#productos') ? 'block' : 'none';
+      document.querySelectorAll('.navbar a').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.info-section').forEach(s=>s.style.display='none');
+      document.getElementById(el.getAttribute('href').substring(1)).style.display='block';
+      document.getElementById('productos').style.display = el.getAttribute('href') === '#productos' ? 'grid-section' : 'none';
     });
   });
+}
+
+function openAuth(type){
+  document.getElementById('auth-modal').style.display='flex';
+  document.getElementById('modal-title').textContent = type === 'login' ? 'Iniciar Sesión' : 'Registrarse';
+}
+function closeAuth(){
+  document.getElementById('auth-modal').style.display='none';
+}
+function submitAuth(){
+  return e=>{
+    e.preventDefault();
+    closeAuth();
+    alert('Función ' + document.getElementById('modal-title').textContent + ' aún no disponible.');
+  };
 }
