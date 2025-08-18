@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>DC‑CARDSV BP</title>
-  <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
   <header class="header">
@@ -27,18 +27,17 @@
     <section id="contacto" class="info-section">
       <div class="container">
         <h2>Contacto</h2>
-        <p>¿Tienes preguntas? Escríbenos por WhatsApp o correo.</p>
+        <p>¿Tienes preguntas? Escríbenos por WhatsApp.</p>
         <a href="https://wa.me/50371234567" class="btn-whatsapp" target="_blank">WhatsApp</a>
       </div>
     </section>
 
     <section id="cuenta" class="info-section">
-      <div class="container" id="cuenta"></div>
+      <div class="container" id="cuenta-content"></div>
     </section>
   </main>
 
   <button class="cart-btn-float" id="cart-btn">🛒</button>
-
   <aside class="cart-panel" id="cart-panel">
     <div class="cart-header">
       <strong>Carrito</strong>
@@ -46,23 +45,25 @@
     </div>
     <div class="cart-items" id="cart-items"></div>
     <div class="cart-total" id="cart-total">Total: $0 USD</div>
-    <button class="btn-pay" id="pay-wa">Pagar por WhatsApp</button>
+    <button class="btn-pay" id="checkout-btn">Checkout / WhatsApp</button>
   </aside>
   <div class="cart-bg" id="cart-bg"></div>
 
-  <div class="modal" id="modal-auth">
+  <div class="modal" id="auth-modal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeAuth()">&times;</span>
       <h3 id="modal-title">Iniciar Sesión</h3>
       <form onsubmit="submitAuth(event)">
         <input type="email" id="auth-email" placeholder="Correo electrónico" required>
+        <input type="password" id="auth-pass" placeholder="Contraseña" required>
         <button type="submit" class="btn">Continuar</button>
+        <p id="toggle-auth">¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span></p>
       </form>
     </div>
   </div>
 
   <footer class="footer">
-    © 2025 DC‑CARDSV BP — hecho con ❤️
+    © 2025 DC‑CARDSV BP — hecho con ❤️
   </footer>
 
   <script src="js/app.js"></script>
