@@ -1,3 +1,4 @@
+// ===== Productos disponibles =====
 const productos = [
   { cod: 'play', nombre: 'PlayStation Store', img: 'https://i.ebayimg.com/images/g/8kEAAOSw4H5oBwax/s-l1600.webp', descrip: 'Recarga tu cuenta PlayStation.', precios: [10,25,50,100] },
   { cod: 'xbox', nombre: 'Xbox Gift Card', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-81.webp', descrip: 'Saldo Xbox.', precios: [10,25,50] },
@@ -5,7 +6,7 @@ const productos = [
   { cod: 'gplay', nombre: 'Google Play', img: 'https://cdn.topuplive.com/uploads/images/goods/20240911/1726048096_PpXJIUWYpb.webp', descrip: 'Saldo Google Play.', precios: [10,25,50] },
   { cod: 'nintendo', nombre: 'Nintendo eShop', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-79.webp', descrip: 'Compra para Nintendo.', precios: [10,20,50] },
   { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn.topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Diamantes Free Fire.', precios: [100,310,520] },
-  { cod: 'roblox', nombre: 'Roblox Gift Card-US', img: 'https://cdn-topuplive.com/uploads/images/goods/v4/f/F-153.webp', descrip: 'Robux o Premium.', precios: [10,25,50] },
+  { cod: 'roblox', nombre: 'Roblox Gift Card', img: 'https://cdn-topuplive.com/uploads/images/goods/v4/f/F-153.webp', descrip: 'Robux o Premium.', precios: [10,25,50] },
   { cod: 'steam', nombre: 'Steam Wallet', img: 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', descrip: 'Saldo Steam.', precios: [5,10,20,50] },
   { cod: 'amazon', nombre: 'Amazon Gift Card', img: 'https://i.ebayimg.com/images/g/luAAAeSwUqdoZwUW/s-l1600.webp', descrip: 'Compra en Amazon.', precios: [10,25,50] },
   { cod: 'fortnite', nombre: 'Fortnite V-Bucks', img: 'https://net-revolution.com/wp-content/uploads/Recargar-Fortnite-desde-Venezuela.png', descrip: 'V-Bucks Fortnite.', precios: [100,500] },
@@ -27,103 +28,133 @@ const productos = [
 
 let carrito = [];
 
+// Renderizar productos
 function renderProductos() {
   const cont = document.getElementById('products-container');
   cont.innerHTML = '';
-  productos.forEach((p,i) => {
+  productos.forEach((p, i) => {
     const div = document.createElement('div');
     div.className = 'card';
     div.innerHTML = `
       <img src="${p.img}" alt="${p.nombre}">
       <h3>${p.nombre}</h3>
       <p>${p.descrip}</p>
-      <select id="monto-${i}">${p.precios.map(m => `<option value="${m}">$${m} USD</option>`).join('')}</select>
-      <button onclick="agregarCarrito(${i})">Agregar al carrito</button>`;
+      <select id="monto-${i}">
+        ${p.precios.map(m => `<option value="${m}">$${m} USD</option>`).join('')}
+      </select>
+      <button onclick="agregarCarrito(${i})">Agregar al carrito</button>
+    `;
     cont.appendChild(div);
   });
 }
 
+// Agregar productos al carrito
 function agregarCarrito(i) {
   const monto = +document.getElementById(`monto-${i}`).value;
   carrito.push({ nombre: productos[i].nombre, monto });
   actualizarCarrito();
 }
 
+// Actualizar display del carrito
 function actualizarCarrito() {
-  const itm = document.getElementById('cart-items');
-  itm.innerHTML = carrito.map(item=>`<div>${item.nombre} - $${item.monto} USD</div>`).join('');
+  const cont = document.getElementById('cart-items');
+  cont.innerHTML = carrito
+    .map(item => `<div>${item.nombre} - $${item.monto} USD</div>`)
+    .join('');
   document.getElementById('cart-total').textContent =
-    'Total: $' + carrito.reduce((a,b)=>a+b.monto,0) + ' USD';
+    'Total: $' + carrito.reduce((a, b) => a + b.monto, 0) + ' USD';
 }
 
+// Mostrar/Ocultar carrito
 function toggleCart(open) {
   document.getElementById('cart-panel').classList.toggle('open', open);
   document.getElementById('cart-bg').classList.toggle('open', open);
 }
 
+// Finalizar compra con verificación de usuario
 function checkout() {
   if (!carrito.length) return alert('Carrito vacío');
   const user = JSON.parse(localStorage.getItem('usuario'));
   if (!user) {
     document.getElementById('modal-title').textContent = 'Iniciar Sesión';
     document.getElementById('auth-modal').style.display = 'flex';
+    switchAuth(); // Asegura que el formulario esté en modo login
     return;
   }
-  const pedidos = JSON.parse(localStorage.getItem('pedidos') || "[]");
+  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
   pedidos.push({ id: Date.now(), email: user.email, items: carrito, estado: 'pendiente' });
   localStorage.setItem('pedidos', JSON.stringify(pedidos));
   carrito = [];
   actualizarCarrito();
-  alert('Pedido enviado. Puedes verlo en "Mi Cuenta".');
+  alert('Pedido enviado. Revísalo en "Mi Cuenta".');
 }
 
+// Cerrar modal
 function closeAuth() {
   document.getElementById('auth-modal').style.display = 'none';
 }
 
+// Cambiar entre Registro e Inicio de Sesión
 function switchAuth() {
+  const regFields = document.getElementById('fields-register');
+  const logFields = document.getElementById('fields-login');
   const title = document.getElementById('modal-title');
-  title.textContent = title.textContent.includes('Registrarse') ? 'Iniciar Sesión' : 'Registrarse';
+  const toggle = document.getElementById('toggle-auth');
+
+  const isRegister = regFields.style.display !== 'none' && regFields.style.display !== '';
+  if (isRegister) {
+    title.textContent = 'Iniciar Sesión';
+    regFields.style.display = 'none';
+    logFields.style.display = '';
+    toggle.innerHTML = `¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span>`;
+  } else {
+    title.textContent = 'Registrarse';
+    regFields.style.display = '';
+    logFields.style.display = 'none';
+    toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="switchAuth()">Iniciar Sesión</span>`;
+  }
 }
 
+// Enviar y procesar formulario de auth
 function submitAuth(e) {
   e.preventDefault();
-  const nombre = document.getElementById('auth-nombre')?.value || '';
-  const apellido = document.getElementById('auth-apellido')?.value || '';
-  const email = document.getElementById('auth-email').value;
-  const telefono = document.getElementById('auth-tel')?.value || '';
-  const direccion = document.getElementById('auth-dir')?.value || '';
-  const pass = document.getElementById('auth-pass').value;
-  const title = document.getElementById('modal-title').textContent;
-  const users = JSON.parse(localStorage.getItem('usuarios') || "{}");
+  const isLogin = document.getElementById('modal-title').textContent === 'Iniciar Sesión';
+  const users = JSON.parse(localStorage.getItem('usuarios') || '{}');
 
-  if (title === 'Registrarse') {
-    if (users[email]) return alert('Usuario ya registrado');
-    users[email] = { pass, nombre, apellido, telefono, direccion };
-    localStorage.setItem('usuarios', JSON.stringify(users));
+  if (isLogin) {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    if (!users[email] || users[email].pass !== pass) return alert('Credenciales inválidas');
+    localStorage.setItem('usuario', JSON.stringify({ email, ...users[email] }));
+    alert('Sesión iniciada');
   } else {
-    if (!users[email] || users[email].pass !== pass) return alert('Credenciales incorrectas');
+    const nombre = document.getElementById('auth-nombre').value.trim();
+    const apellido = document.getElementById('auth-apellido').value.trim();
+    const email = document.getElementById('auth-email').value.trim();
+    const tel = document.getElementById('auth-tel').value.trim();
+    const dir = document.getElementById('auth-dir').value.trim();
+    const pass = document.getElementById('auth-pass').value;
+    if (users[email]) return alert('Usuario ya registrado');
+    users[email] = { nombre, apellido, telefono: tel, direccion: dir, pass, role: email.endsWith('@admin.com') ? 'admin' : 'cliente' };
+    localStorage.setItem('usuarios', JSON.stringify(users));
+    localStorage.setItem('usuario', JSON.stringify({ email, ...users[email] }));
+    alert('Registro exitoso');
   }
 
-  localStorage.setItem('usuario', JSON.stringify({
-    email,
-    nombre: users[email].nombre,
-    apellido: users[email].apellido,
-    telefono: users[email].telefono,
-    direccion: users[email].direccion,
-    role: email.endsWith('@admin.com') ? 'admin' : 'cliente'
-  }));
   closeAuth();
   renderCuenta();
 }
 
+// Renderiza sección "Mi Cuenta"
 function renderCuenta() {
   const user = JSON.parse(localStorage.getItem('usuario'));
   const sec = document.getElementById('cuenta-content');
+
   if (!user) {
     sec.innerHTML = `
-      <button onclick="document.getElementById('modal-title').textContent='Registrarse';document.getElementById('auth-modal').style.display='flex'">Registrarse</button>
-      <button onclick="document.getElementById('modal-title').textContent='Iniciar Sesión';document.getElementById('auth-modal').style.display='flex'">Iniciar Sesión</button>`;
+      <button onclick="document.getElementById('modal-title').textContent='Registrarse';document.getElementById('auth-modal').style.display='flex';switchAuth()">Registrarse</button>
+      <button onclick="document.getElementById('modal-title').textContent='Iniciar Sesión';document.getElementById('auth-modal').style.display='flex';switchAuth()">Iniciar Sesión</button>
+    `;
     return;
   }
 
@@ -132,44 +163,54 @@ function renderCuenta() {
     <p>Email: ${user.email}</p>
     <p>Tel: ${user.telefono}</p>
     <p>Dir: ${user.direccion}</p>
-    <button onclick="logout()">Cerrar sesión</button>`;
+    <button onclick="logout()">Cerrar sesión</button>
+    <h3>Pedidos</h3>
+  `;
 
-  const pedidos = JSON.parse(localStorage.getItem('pedidos') || "[]");
+  const pedidos = JSON.parse(localStorage.getItem('pedidos')||'[]');
   if (user.role === 'admin') {
-    html += `<h3>Panel Admin</h3><table><tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Acción</th></tr>`;
+    html += `<table>
+      <tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Acción</th></tr>`;
     pedidos.forEach((p,i) => {
-      html += `<tr>
-        <td>${p.id}</td>
-        <td>${p.email}</td>
-        <td>${p.estado}</td>
-        <td><button class="button-small button-complete" onclick="cambiarEstado(${i})">Cambiar</button></td>
-      </tr>`;
+      html += `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.email}</td>
+          <td>${p.estado}</td>
+          <td><button class="button-small button-complete" onclick="cambiarEstado(${i})">Cambiar</button></td>
+        </tr>`;
     });
     html += `</table>`;
   } else {
-    html += `<h3>Tus pedidos</h3><table><tr><th>ID</th><th>Estado</th></tr>`;
-    pedidos.filter(p => p.email === user.email).forEach(p => {
-      html += `<tr><td>${p.id}</td><td>${p.estado}</td></tr>`;
-    });
+    html += `<table>
+      <tr><th>ID</th><th>Estado</th></tr>`;
+    pedidos.filter(p => p.email === user.email)
+      .forEach(p => {
+        html += `<tr><td>${p.id}</td><td>${p.estado}</td></tr>`;
+      });
     html += `</table>`;
   }
 
   sec.innerHTML = html;
 }
 
+// Cerrar sesión
 function logout() {
   localStorage.removeItem('usuario');
   renderCuenta();
 }
 
+// Cambiar estado del pedido (solo admin)
 function cambiarEstado(i) {
-  const pedidos = JSON.parse(localStorage.getItem('pedidos') || "[]");
-  const estados = ['pendiente','completado','reembolsado'];
-  pedidos[i].estado = estados[(estados.indexOf(pedidos[i].estado) + 1) % estados.length];
+  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
+  const estados = ['pendiente', 'completado', 'reembolsado'];
+  const idx = estados.indexOf(pedidos[i].estado);
+  pedidos[i].estado = estados[(idx + 1) % estados.length];
   localStorage.setItem('pedidos', JSON.stringify(pedidos));
   renderCuenta();
 }
 
+// Mostrar solo una sección en pantalla
 function showSection(id) {
   document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
   document.getElementById(id).style.display = '';
@@ -177,5 +218,6 @@ function showSection(id) {
   document.querySelector(`.navbar a[onclick*="${id}"]`).classList.add('active');
 }
 
+// Inicialización
 renderProductos();
 renderCuenta();
