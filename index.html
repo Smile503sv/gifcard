@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>DC‑CARDSV BP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
   <header class="header">
@@ -23,8 +23,18 @@
     <section id="productos" class="cards-section">
       <div class="container" id="products-container"></div>
     </section>
-    <section id="contacto" class="info-section"></section>
-    <section id="cuenta" class="info-section"></section>
+    <section id="contacto" class="info-section">
+      <h2>Contacto</h2>
+      <p>¿Tienes preguntas? Escríbenos por WhatsApp:</p>
+      <a href="https://wa.me/50371234567" target="_blank" class="btn-whatsapp">WhatsApp</a>
+    </section>
+    <section id="cuenta" class="info-section">
+      <h2>Mi Cuenta</h2>
+      <div class="account-buttons">
+        <button id="btn-register">Registrarse</button>
+        <button id="btn-login">Iniciar Sesión</button>
+      </div>
+    </section>
   </main>
 
   <button class="cart-btn-float" id="cart-btn">🛒</button>
@@ -40,9 +50,21 @@
   </aside>
   <div class="cart-bg" id="cart-bg"></div>
 
-  <footer class="footer">
-    © 2025 DC‑CARDSV BP — hecho con ❤️
-  </footer>
+  <div class="modal" id="auth-modal">
+    <div class="modal-content">
+      <h3 id="modal-title">Iniciar Sesión</h3>
+      <form id="auth-form">
+        <input type="email" id="auth-email" placeholder="Correo electrónico" required />
+        <button type="submit" class="btn-modal" id="auth-submit">Continuar</button>
+        <p id="switch-auth">¿No tienes cuenta?
+          <span id="toggle-auth">Regístrate</span>
+        </p>
+      </form>
+      <button class="modal-close" id="modal-close">&times;</button>
+    </div>
+  </div>
+
+  <footer class="footer">© 2025 DC‑CARDSV BP — hecho con ❤️</footer>
 
   <script src="js/app.js"></script>
 </body>
