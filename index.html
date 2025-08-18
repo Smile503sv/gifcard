@@ -27,7 +27,7 @@
       <div class="container">
         <h2>Contacto</h2>
         <p>¿Tienes dudas? Escríbenos por WhatsApp:</p>
-        <a href="https://wa.me/50379553318" class="btn-whatsapp" target="_blank">WhatsApp</a>
+        <a href="https://wa.me/50371234567" class="btn-whatsapp" target="_blank">WhatsApp</a>
       </div>
     </section>
     <section id="cuenta" class="section" style="display:none">
@@ -50,13 +50,17 @@
   <div class="modal" id="auth-modal">
     <div class="modal-content">
       <span onclick="closeAuth()" class="modal-close">&times;</span>
-      <h3 id="modal-title">Iniciar Sesión</h3>
+      <h3 id="modal-title">Registrarse</h3>
       <form onsubmit="submitAuth(event)">
+        <input type="text" id="auth-nombre" placeholder="Nombre" required/>
+        <input type="text" id="auth-apellido" placeholder="Apellido" required/>
         <input type="email" id="auth-email" placeholder="Correo electrónico" required/>
+        <input type="tel" id="auth-tel" placeholder="Teléfono" required/>
+        <input type="text" id="auth-dir" placeholder="Dirección" required/>
         <input type="password" id="auth-pass" placeholder="Contraseña" required/>
         <button type="submit" class="btn">Continuar</button>
       </form>
-      <p id="toggle-auth">¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span></p>
+      <p id="toggle-auth">¿Ya tienes cuenta? <span onclick="switchAuth()">Iniciar Sesión</span></p>
     </div>
   </div>
 
