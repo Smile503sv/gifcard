@@ -28,55 +28,52 @@ const productos = [
 const montos = [10, 25, 50, 75, 100, 200, 500];
 let carrito = [];
 
-// Render productos
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   const cont = document.getElementById('products-container');
   productos.forEach((prod, i) => {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
-      <img src="${prod.img}" alt="${prod.nombre}">
+      <img src="${prod.img}">
       <h3>${prod.nombre}</h3>
       <p>${prod.descrip}</p>
-      <select id="monto-${i}">
-        ${montos.map(m => `<option value="${m}">$${m} USD</option>`).join('')}
-      </select>
-      <button onclick="agregarAlCarrito(${i})">Agregar al carrito</button>
+      <select id="monto-${i}">${montos.map(m => `<option value="${m}">$${m}</option>`).join('')}</select>
+      <button onclick="agregarCarrito(${i})">Agregar al carrito</button>
     `;
     cont.appendChild(card);
   });
 
-  document.getElementById('cart-btn').onclick = mostrarCarrito;
-  document.getElementById('cart-close').onclick = cerrarCarrito;
-  document.getElementById('cart-bg').onclick = cerrarCarrito;
+  document.getElementById('cart-btn').onclick = showCart;
+  document.getElementById('cart-close').onclick = closeCart;
+  document.getElementById('cart-bg').onclick = closeCart;
   document.getElementById('pay-wa').onclick = pagarWhatsApp;
 });
 
-function agregarAlCarrito(idx) {
-  const monto = document.getElementById(`monto-${idx}`).value;
+function agregarCarrito(idx) {
+  const monto = Number(document.getElementById(`monto-${idx}`).value);
   const prod = productos[idx];
-  carrito.push({ nombre: prod.nombre, monto: Number(monto) });
-  mostrarCarrito();
+  carrito.push({ nombre: prod.nombre, monto });
+  renderCart();
 }
 
-function mostrarCarrito() {
-  const itemsDiv = document.getElementById('cart-items');
+function renderCart() {
+  const items = document.getElementById('cart-items');
   const totalDiv = document.getElementById('cart-total');
-  itemsDiv.innerHTML = '';
+  items.innerHTML = '';
   let total = 0;
-  carrito.forEach(prod => {
-    total += prod.monto;
+  carrito.forEach((it, i) => {
+    total += it.monto;
     const div = document.createElement('div');
     div.className = 'cart-item';
-    div.textContent = `${prod.nombre} - $${prod.monto}`;
-    itemsDiv.appendChild(div);
+    div.textContent = `${it.nombre} - $${it.monto}`;
+    items.appendChild(div);
   });
   totalDiv.textContent = `Total: $${total} USD`;
   document.getElementById('cart-panel').classList.add('open');
   document.getElementById('cart-bg').classList.add('open');
 }
 
-function cerrarCarrito() {
+function closeCart() {
   document.getElementById('cart-panel').classList.remove('open');
   document.getElementById('cart-bg').classList.remove('open');
 }
@@ -84,6 +81,6 @@ function cerrarCarrito() {
 function pagarWhatsApp() {
   if (!carrito.length) return alert('Carrito vacío');
   let msg = 'Hola, quiero comprar:\n';
-  carrito.forEach(item => msg += `- ${item.nombre} $${item.monto}\n`);
+  carrito.forEach(it => msg += `- ${it.nombre} $${it.monto}\n`);
   window.open(`https://wa.me/50371234567?text=${encodeURIComponent(msg)}`, '_blank');
 }
