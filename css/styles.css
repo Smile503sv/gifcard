@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: #f5f5f5;
+  background: linear-gradient(180deg, #f1f2f3, #e5e5e5);
   color: #333;
 }
 .container {
@@ -9,7 +9,6 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .header {
   background: #fff;
   border-bottom: 2px solid #e30613;
@@ -17,17 +16,17 @@ body {
 }
 .logo {
   color: #e30613;
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 900;
 }
 .navbar {
-  display: inline-block;
+  float: right;
 }
 .navbar a {
   margin: 0 1rem;
   color: #555;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: 500;
   transition: color 0.3s;
 }
 .navbar a:hover,
@@ -40,55 +39,66 @@ body {
 }
 .cards-section .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
 }
 .card {
   background: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: 14px;
+  padding: 2rem 1rem;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.07);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.15);
 }
 .card img {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   object-fit: contain;
   margin-bottom: 1rem;
 }
 .card h3 {
   color: #e30613;
-  margin: 0.5rem 0;
+  margin: 0.7rem 0;
+  font-size: 1.2rem;
 }
 .card p {
   margin-bottom: 1rem;
-  min-height: 40px;
 }
-.card select {
-  padding: 0.5rem;
-  border: 1px solid #e30613;
-  border-radius: 5px;
-  color: #e30613;
-  font-weight: 600;
-  margin-bottom: 0.8rem;
+.card select,
+.card button {
   width: 80%;
 }
-.card button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  background: #e30613;
-  color: #fff;
+.card select {
+  padding: 0.6rem;
+  border: 1px solid #e30613;
   border-radius: 6px;
+  color: #e30613;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.card button {
+  padding: 0.8rem;
+  background: #e30613;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.3s;
 }
 .card button:hover {
   background: #b40410;
+}
+
+.info-section {
+  display: none;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 1.1rem;
 }
 
 .cart-btn-float {
@@ -105,8 +115,7 @@ body {
   justify-content: center;
   font-size: 2rem;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  z-index: 1000;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.1);
 }
 .cart-panel {
   position: fixed;
@@ -115,10 +124,9 @@ body {
   width: 320px;
   height: 100vh;
   background: #fff;
-  transform: translateX(110%);
+  transform: translateX(115%);
   transition: transform 0.3s;
-  box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-  z-index: 1100;
+  box-shadow: -5px 0 20px rgba(0,0,0,0.2);
 }
 .cart-panel.open {
   transform: translateX(0);
@@ -129,9 +137,8 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.25);
   display: none;
-  z-index: 1050;
 }
 .cart-bg.open {
   display: block;
@@ -141,6 +148,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  font-size: 1.2rem;
   border-bottom: 1px solid #ddd;
 }
 .cart-items {
@@ -155,6 +163,7 @@ body {
 }
 .cart-total {
   padding: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   text-align: right;
 }
@@ -164,34 +173,17 @@ body {
   padding: 0.8rem;
   background: #25d366;
   color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
-  display: block;
 }
 
 .footer {
   text-align: center;
   padding: 2rem 0;
   background: #fff;
-  margin-top: 2rem;
   font-size: 0.9rem;
-}
-
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 12px;
-}
-.carousel-item {
-  min-width: 200px;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 10px;
-  scroll-snap-align: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  text-align: center;
+  margin-top: 2rem;
 }
