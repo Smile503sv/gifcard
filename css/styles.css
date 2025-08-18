@@ -17,7 +17,7 @@ body {
 .logo {
   color: #e30613;
   font-size: 2rem;
-  font-weight: 900;
+  font-weight: bold;
 }
 .navbar {
   float: right;
@@ -25,21 +25,25 @@ body {
 .navbar a {
   margin: 0 1rem;
   color: #555;
-  font-weight: 600;
   text-decoration: none;
-  transition: color 0.3s;
+  font-weight: 600;
 }
 .navbar a:hover,
 .navbar a.active {
   color: #e30613;
 }
 
-.cards-section {
+.cards-section,
+.info-section {
   padding: 2rem 0;
+}
+.info-section {
+  display: none;
+  text-align: center;
 }
 .cards-section .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
   gap: 2rem;
 }
 .card {
@@ -48,7 +52,6 @@ body {
   padding: 2rem 1rem;
   text-align: center;
   box-shadow: 0 6px 24px rgba(0,0,0,0.07);
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 .card:hover {
   transform: translateY(-8px);
@@ -62,7 +65,7 @@ body {
 }
 .card h3 {
   color: #e30613;
-  margin: 0.7rem 0;
+  margin: .7rem 0;
   font-size: 1.2rem;
 }
 .card p {
@@ -73,32 +76,45 @@ body {
   width: 80%;
 }
 .card select {
-  padding: 0.6rem;
+  padding: .6rem;
   border: 1px solid #e30613;
   border-radius: 6px;
+  margin-bottom: 1rem;
   color: #e30613;
   font-weight: 600;
-  margin-bottom: 1rem;
 }
 .card button {
-  padding: 0.8rem;
+  padding: .8rem;
   background: #e30613;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s;
 }
 .card button:hover {
   background: #b40410;
 }
 
-.info-section {
-  display: none;
-  padding: 2rem 0;
-  text-align: center;
-  font-size: 1.1rem;
+.btn-whatsapp {
+  padding: .8rem 1.6rem;
+  background: #25d366;
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.account-buttons button {
+  padding: .8rem 1.6rem;
+  margin: 0 .5rem;
+  background: #e30613;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.account-buttons button:hover {
+  background: #b40410;
 }
 
 .cart-btn-float {
@@ -110,23 +126,16 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 2rem;
-  cursor: pointer;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.1);
 }
 .cart-panel {
   position: fixed;
   top: 0;
   right: 0;
-  width: 320px;
+  width: 340px;
   height: 100vh;
   background: #fff;
   transform: translateX(115%);
-  transition: transform 0.3s;
-  box-shadow: -5px 0 20px rgba(0,0,0,0.2);
 }
 .cart-panel.open {
   transform: translateX(0);
@@ -144,17 +153,16 @@ body {
   display: block;
 }
 .cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 1rem;
   font-size: 1.2rem;
   border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
 }
 .cart-items {
   padding: 1rem;
-  overflow-y: auto;
   height: calc(100vh - 200px);
+  overflow-y: auto;
 }
 .cart-item {
   display: flex;
@@ -164,19 +172,61 @@ body {
 .cart-total {
   padding: 1rem;
   font-size: 1.1rem;
-  font-weight: 700;
-  text-align: right;
 }
 .btn-pay {
-  width: 90%;
-  margin: 1rem auto;
-  padding: 0.8rem;
+  padding: .8rem 1.2rem;
   background: #25d366;
   color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
   border: none;
   border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+  margin: .5rem auto;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal .modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 360px;
+  text-align: center;
+}
+.modal input {
+  width: 100%;
+  padding: .6rem;
+  margin: .8rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.btn-modal {
+  padding: .8rem;
+  background: #e30613;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  width: 100%;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   cursor: pointer;
 }
 
@@ -184,6 +234,6 @@ body {
   text-align: center;
   padding: 2rem 0;
   background: #fff;
-  font-size: 0.9rem;
+  font-size: .9rem;
   margin-top: 2rem;
 }
