@@ -156,8 +156,8 @@ function renderCuenta() {
 
   if (!user) {
     sec.innerHTML = `
-      <button onclick="document.getElementById('modal-title').textContent='Registrarse';document.getElementById('auth-modal').style.display='flex';switchAuth()">Registrarse</button>
-      <button onclick="document.getElementById('modal-title').textContent='Iniciar Sesión';document.getElementById('auth-modal').style.display='flex';switchAuth()">Iniciar Sesión</button>
+      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('register')">Registrarse</button>
+      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('login')">Iniciar Sesión</button>
     `;
     return;
   }
@@ -173,13 +173,21 @@ function renderCuenta() {
 
   const pedidos = JSON.parse(localStorage.getItem('pedidos')||'[]');
   if (user.role === 'admin') {
-    html += `<table><tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Acción</th></tr>`;
+    html += `<table>
+      <tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Acción</th></tr>`;
     pedidos.forEach((p,i) => {
-      html += `<tr><td>${p.id}</td><td>${p.email}</td><td>${p.estado}</td><td><button class="button-small button-complete" onclick="cambiarEstado(${i})">Cambiar</button></td></tr>`;
+      html += `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.email}</td>
+          <td>${p.estado}</td>
+          <td><button class="button-small button-complete" onclick="cambiarEstado(${i})">Cambiar</button></td>
+        </tr>`;
     });
     html += `</table>`;
   } else {
-    html += `<table><tr><th>ID</th><th>Estado</th></tr>`;
+    html += `<table>
+      <tr><th>ID</th><th>Estado</th></tr>`;
     pedidos.filter(p => p.email === user.email)
       .forEach(p => {
         html += `<tr><td>${p.id}</td><td>${p.estado}</td></tr>`;
@@ -189,6 +197,7 @@ function renderCuenta() {
 
   sec.innerHTML = html;
 }
+
 
 function logout() {
   localStorage.removeItem('usuario');
