@@ -1,127 +1,305 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.6)), url('./assets/gaming-bg.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.6)),
+              url('https://cdn.pixabay.com/photo/2016/11/23/15/33/joystick-1858026_1280.jpg') center/cover no-repeat;
   color: #eee;
   overflow-x: hidden;
 }
-.container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .header {
-  background: rgba(0,0,0,0.6);
-  padding: 1rem 0; border-bottom: 3px solid #e30613;
-  display: flex; justify-content: space-between; align-items: center;
-  position: sticky; top:0; z-index:100;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1rem 0;
+  border-bottom: 3px solid #e30613;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-.logo { font-size: 1.8rem; font-weight:700; color:#e30613; }
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e30613;
+}
+
 .navbar a {
-  margin: 0 1rem; color:#ccc; text-decoration:none; font-weight:600;
-  transition: color .3s;
+  margin: 0 1rem;
+  color: #ccc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
 }
-.navbar a:hover, .navbar a.active { color:#e30613; }
+
+.navbar a:hover,
+.navbar a.active {
+  color: #e30613;
+}
+
 .section {
-  background: rgba(0,0,0,0.5);
-  margin: 2rem 0; padding: 2rem; border-radius: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  margin: 2rem 0;
+  padding: 2rem;
+  border-radius: 8px;
 }
+
 .cards-container {
-  display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
 }
+
 .card {
-  background: rgba(255,255,255,0.1); padding:1rem; border-radius:8px; text-align:center;
-  box-shadow:0 4px 16px rgba(0,0,0,0.6); transition:transform .3s, box-shadow .3s;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
+
 .card:hover {
   transform: scale(1.03);
-  box-shadow:0 0 20px #e30613;
+  box-shadow: 0 0 20px #e30613;
 }
+
 .card img {
-  width:100px; height:100px; object-fit:contain; margin-bottom:.5rem;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
 }
-.card h3 { color:#e30613; margin:.5rem 0; }
-.card select, .card button {
-  margin: .5rem 0; padding: .5rem; border:none; border-radius:6px; font-weight:600;
+
+.card h3 {
+  color: #e30613;
+  margin: 0.5rem 0;
 }
-.card select {
-  border:1px solid #e30613; color:#e30613; background:transparent;
-}
+
+.card select,
 .card button {
-  background:#e30613; color:#fff; cursor:pointer;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
 }
-.card button:hover { background:#b40410; }
+
+.card select {
+  border: 1px solid #e30613;
+  color: #e30613;
+  background: transparent;
+}
+
+.card button {
+  background: #e30613;
+  color: #fff;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: #b40410;
+}
+
 .btn-whatsapp {
-  background:#25d366; color:#fff; padding:.8rem 1.2rem; border-radius:6px;
-  text-decoration:none; font-weight:600; display:inline-block; margin-top:1rem;
+  background: #25d366;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 1rem;
 }
+
 .cart-btn-float {
-  position:fixed; bottom:1.5rem; right:1.5rem;
-  background:#e30613; color:#fff; width:60px; height:60px; border-radius:50%;
-  font-size:1.6rem; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; box-shadow:0 4px 20px rgba(0,0,0,0.3); z-index:1000;
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: #e30613;
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
 }
+
 .cart-panel {
-  position:fixed; top:0; right:0; width:320px; height:100vh;
-  background:#111; transform:translateX(110%); transition:transform .3s;
-  z-index:1001; padding:1rem; overflow-y:auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100vh;
+  background: #111;
+  transform: translateX(110%);
+  transition: transform 0.3s;
+  z-index: 1001;
+  padding: 1rem;
+  overflow-y: auto;
 }
-.cart-panel.open { transform:translateX(0); }
+
+.cart-panel.open {
+  transform: translateX(0);
+}
+
 .cart-bg {
-  position:fixed; top:0; left:0; width:100%; height:100vh;
-  background: rgba(0,0,0,0.6); display:none; z-index:1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 1000;
 }
-.cart-bg.open { display:block; }
+
+.cart-bg.open {
+  display: block;
+}
+
 .cart-header {
-  display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
+
 .cart-items div {
-  padding:.5rem 0; border-bottom:1px solid #333;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #333;
 }
+
 .btn-pay {
-  width:100%; background:#25d366; color:#fff; padding:.8rem;
-  border:none; border-radius:6px; margin-top:1rem; font-weight:600; cursor:pointer;
+  width: 100%;
+  background: #25d366;
+  color: #fff;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-weight: 600;
+  cursor: pointer;
 }
+
 .modal {
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background:rgba(0,0,0,0.7); display:none; justify-content:center; align-items:center;
-  z-index:2000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
+
 .modal-content {
-  background:#222; padding:2rem; border-radius:8px;
-  position:relative; width:320px; color:#fff;
+  background: #222;
+  padding: 2rem;
+  border-radius: 8px;
+  position: relative;
+  width: 320px;
+  color: #fff;
 }
+
 .modal-close {
-  position:absolute; top:.5rem; right:.5rem; cursor:pointer; color:#e30613; font-size:1.2rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+  color: #e30613;
+  font-size: 1.2rem;
 }
+
 .modal-content input {
-  width:100%; padding:.6rem; margin:.5rem 0; border:1px solid #555;
-  border-radius:6px; background:#333; color:#fff;
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background: #333;
+  color: #fff;
 }
+
 .modal-content .btn {
-  background:#e30613; color:#fff; padding:.6rem; border:none;
-  border-radius:6px; width:100%; font-weight:600; cursor:pointer; margin-top:.5rem;
+  background: #e30613;
+  color: #fff;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
 }
+
 .modal-content #toggle-auth {
-  margin-top:.8rem; font-size:.9rem;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
 }
+
 .footer {
-  padding:1.5rem 0; text-align:center; font-size:.9rem; margin-top:1rem; color:#ccc;
+  padding: 1.5rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  color: #ccc;
 }
+
 table {
-  width:100%; border-collapse:collapse; margin-top:1rem; color:#eee;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  color: #eee;
 }
+
 th, td {
-  padding:.8rem; text-align:left; border-bottom:1px solid #444;
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #444;
 }
+
 th {
-  background: rgba(255,255,255,0.1); font-weight:600;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
 }
+
 td {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
+
 .button-small {
-  padding: .3rem .6rem; font-size:.9rem; border:none; border-radius:4px; cursor:pointer;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
+
 .button-complete {
-  background: #25d366; color:#fff;
+  background: #25d366;
+  color: #fff;
 }
+
 .button-complete:hover {
-  background:#1fa354;
+  background: #1fa354;
 }
