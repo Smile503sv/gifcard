@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -47,29 +48,28 @@
   </aside>
   <div class="cart-bg" id="cart-bg" onclick="toggleCart(false)"></div>
 
+  <!-- Modal de autenticación -->
   <div class="modal" id="auth-modal">
     <div class="modal-content">
       <span onclick="closeAuth()" class="modal-close">&times;</span>
-      <h3 id="modal-title">Registrarse</h3>
+      <h3 id="modal-title">Iniciar Sesión</h3>
       <form id="auth-form" onsubmit="submitAuth(event)">
-        <!-- Registro fields -->
-        <div id="fields-register">
-          <input type="text" id="auth-nombre" placeholder="Nombre" required/>
-          <input type="text" id="auth-apellido" placeholder="Apellido" required/>
-          <input type="email" id="auth-email" placeholder="Correo electrónico" required/>
-          <input type="tel" id="auth-tel" placeholder="Teléfono" required/>
-          <input type="text" id="auth-dir" placeholder="Dirección" required/>
-          <input type="password" id="auth-pass" placeholder="Contraseña" required/>
+        <div id="fields-register" style="display:none;">
+          <input type="text" id="auth-nombre" placeholder="Nombre"/>
+          <input type="text" id="auth-apellido" placeholder="Apellido"/>
+          <input type="email" id="auth-email" placeholder="Correo electrónico"/>
+          <input type="tel" id="auth-tel" placeholder="Teléfono"/>
+          <input type="text" id="auth-dir" placeholder="Dirección"/>
+          <input type="password" id="auth-pass" placeholder="Contraseña"/>
         </div>
-        <!-- Login fields -->
-        <div id="fields-login" style="display:none;">
-          <input type="email" id="login-email" placeholder="Correo electrónico" required/>
-          <input type="password" id="login-pass" placeholder="Contraseña" required/>
+        <div id="fields-login">
+          <input type="email" id="login-email" placeholder="Correo electrónico"/>
+          <input type="password" id="login-pass" placeholder="Contraseña"/>
         </div>
         <button type="submit" class="btn">Continuar</button>
       </form>
       <p id="toggle-auth">
-        ¿Ya tienes cuenta? <span onclick="switchAuth()">Iniciar Sesión</span>
+        ¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span>
       </p>
     </div>
   </div>
