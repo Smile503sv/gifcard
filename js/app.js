@@ -3,7 +3,7 @@ const productos = [
   { cod: 'xbox', nombre: 'Xbox Gift Card', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-81.webp', descrip: 'Saldo Xbox.', precios: [10,25,50] },
   { cod: 'itunes', nombre: 'Apple / iTunes', img: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg', descrip: 'Apps, música y más.', precios: [15,25,50] },
   { cod: 'gplay', nombre: 'Google Play', img: 'https://cdn.topuplive.com/uploads/images/goods/20240911/1726048096_PpXJIUWYpb.webp', descrip: 'Saldo Google Play.', precios: [10,25,50] },
-  { cod: 'nintendo', nombre: 'Nintendo eShop', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-79.webp', descrip: 'Compra para Nintendo.', precios: [10,20,50] },
+  { cod: 'nintendo', nombre: 'Nintendo eShop', img: 'https://cdn-topuplive.com/uploads/images/goods/v4/f/F-79.webp', descrip: 'Compra para Nintendo.', precios: [10,20,50] },
   { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn-topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Diamantes Free Fire.', precios: [100,310,520] },
   { cod: 'roblox', nombre: 'Roblox Gift Card', img: 'https://cdn-topuplive.com/uploads/images/goods/v4/f/F-153.webp', descrip: 'Robux o Premium.', precios: [10,25,50] },
   { cod: 'steam', nombre: 'Steam Wallet', img: 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', descrip: 'Saldo Steam.', precios: [5,10,20,50] },
@@ -78,7 +78,7 @@ function checkout() {
   localStorage.setItem('pedidos', JSON.stringify(pedidos));
   carrito = [];
   actualizarCarrito();
-  alert('Pedido enviado. Revisa tu cuenta para más detalles.');
+  alert('Pedido enviado. Revísalo en "Mi Cuenta".');
 }
 
 function closeAuth() {
@@ -92,11 +92,13 @@ function setAuthMode(mode) {
         toggle = document.getElementById('toggle-auth');
   if (mode === 'login') {
     title.textContent = 'Iniciar Sesión';
-    reg.style.display = 'none'; log.style.display = '';
+    reg.style.display = 'none';
+    log.style.display = '';
     toggle.innerHTML = `¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>`;
   } else {
     title.textContent = 'Registrarse';
-    reg.style.display = ''; log.style.display = 'none';
+    reg.style.display = '';
+    log.style.display = 'none';
     toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="setAuthMode('login')">Iniciar Sesión</span>`;
   }
 }
@@ -106,20 +108,27 @@ function submitAuth(e) {
   const isLogin = document.getElementById('modal-title').textContent === 'Iniciar Sesión';
   const users = JSON.parse(localStorage.getItem('usuarios') || '{}');
   if (isLogin) {
-    const em = document.getElementById('login-email').value.trim(),
-          pw = document.getElementById('login-pass').value;
+    const em = document.getElementById('login-email').value.trim();
+    const pw = document.getElementById('login-pass').value;
     if (!users[em] || users[em].pass !== pw) return alert('Credenciales inválidas');
     localStorage.setItem('usuario', JSON.stringify({ email: em, ...users[em] }));
     alert('Sesión iniciada');
   } else {
-    const nm = document.getElementById('auth-nombre').value.trim(),
-          ap = document.getElementById('auth-apellido').value.trim(),
-          em = document.getElementById('auth-email').value.trim(),
-          tl = document.getElementById('auth-tel').value.trim(),
-          di = document.getElementById('auth-dir').value.trim(),
-          pw = document.getElementById('auth-pass').value;
+    const nm = document.getElementById('auth-nombre').value.trim();
+    const ap = document.getElementById('auth-apellido').value.trim();
+    const em = document.getElementById('auth-email').value.trim();
+    const tl = document.getElementById('auth-tel').value.trim();
+    const di = document.getElementById('auth-dir').value.trim();
+    const pw = document.getElementById('auth-pass').value;
     if (users[em]) return alert('Usuario ya registrado');
-    users[em] = { nombre: nm, apellido: ap, telefono: tl, direccion: di, pass: pw, role: em.endsWith('@admin.com') ? 'admin' : 'cliente' };
+    users[em] = {
+      nombre: nm,
+      apellido: ap,
+      telefono: tl,
+      direccion: di,
+      pass: pw,
+      role: em.endsWith('@admin.com') ? 'admin' : 'cliente'
+    };
     localStorage.setItem('usuarios', JSON.stringify(users));
     localStorage.setItem('usuario', JSON.stringify({ email: em, ...users[em] }));
     alert('Registro exitoso');
@@ -137,18 +146,25 @@ function generarCodigo() {
   return 'DC-' + Math.random().toString(36).substr(2, 10).toUpperCase();
 }
 
-function enviarCodigo(email, id, codigo) {
+function enviarCodigo(email, orderId, codigo) {
   emailjs.send('service_i5vt2sq', 'template_order_confirmed', {
-    to_email: email,
-    order_id: id,
+    email: email,
+    order_id: orderId,
     codigo: codigo
   })
-  .then(() => alert(`Correo enviado a ${email} con código: ${codigo}`))
-  .catch(() => alert('Error enviando correo'));
+  .then(() => {
+    alert(`Correo enviado a ${email} con código: ${codigo}`);
+  })
+  .catch((err) => {
+    console.error(err);
+    alert('Error enviando correo');
+  });
 }
 
 function copiarCodigo(codigo) {
-  navigator.clipboard.writeText(codigo).then(() => alert(`Copiado: ${codigo}`));
+  navigator.clipboard.writeText(codigo)
+    .then(() => alert(`Copiado: ${codigo}`))
+    .catch(() => alert('Error copiando código'));
 }
 
 function cambiarEstado(i) {
@@ -170,19 +186,30 @@ function renderCuenta() {
   const user = JSON.parse(localStorage.getItem('usuario'));
   const sec = document.getElementById('cuenta-content');
   if (!user) {
-    sec.innerHTML = `<button onclick="setAuthMode('register'); document.getElementById('auth-modal').style.display='flex'">Registrarse</button>
-                     <button onclick="setAuthMode('login'); document.getElementById('auth-modal').style.display='flex'">Iniciar Sesión</button>`;
+    sec.innerHTML = `
+      <button onclick="setAuthMode('register'); document.getElementById('auth-modal').style.display='flex'">Registrarse</button>
+      <button onclick="setAuthMode('login'); document.getElementById('auth-modal').style.display='flex'">Iniciar Sesión</button>`;
     return;
   }
-  let html = `<p><strong>${user.nombre} ${user.apellido}</strong></p><p>Email: ${user.email}</p>
-              <p>Tel: ${user.telefono}</p><p>Dir: ${user.direccion}</p>
-              <button onclick="logout()">Cerrar sesión</button><h3>Pedidos</h3>`;
+  let html = `
+    <p><strong>${user.nombre} ${user.apellido}</strong></p>
+    <p>Email: ${user.email}</p>
+    <p>Tel: ${user.telefono}</p>
+    <p>Dir: ${user.direccion}</p>
+    <button onclick="logout()">Cerrar sesión</button>
+    <h3>Pedidos</h3>`;
   const ped = JSON.parse(localStorage.getItem('pedidos') || '[]');
   if (user.role === 'admin') {
     html += '<table><tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Código</th><th>Acción</th></tr>';
-    ped.forEach((p,i) => {
-      html += `<tr><td>${p.id}</td><td>${p.email}</td><td>${p.estado}</td>
-               <td>${p.codigo||'-'}</td><td><button onclick="cambiarEstado(${i})">Cambiar</button></td></tr>`;
+    ped.forEach((p, i) => {
+      html += `
+      <tr>
+        <td>${p.id}</td>
+        <td>${p.email}</td>
+        <td>${p.estado}</td>
+        <td>${p.codigo || '-'}</td>
+        <td><button onclick="cambiarEstado(${i})">Cambiar</button></td>
+      </tr>`;
     });
     html += '</table>';
   } else {
@@ -190,11 +217,16 @@ function renderCuenta() {
     if (mis.length) {
       html += '<table><tr><th>ID</th><th>Estado</th><th>Código</th></tr>';
       mis.forEach(p => {
-        html += `<tr><td>${p.id}</td><td>${p.estado}</td><td>${
-          p.estado === 'completado' && p.codigo
-            ? `<strong style="color:#25d366">${p.codigo}</strong> <button onclick="copiarCodigo('${p.codigo}')">📋 Copiar</button>`
-            : '-'
-        }</td></tr>`;
+        html += `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.estado}</td>
+          <td>${
+            p.estado === 'completado' && p.codigo
+              ? `<strong style="color:#25d366">${p.codigo}</strong> <button onclick="copiarCodigo('${p.codigo}')">📋 Copiar</button>`
+              : '-'
+          }</td>
+        </tr>`;
       });
       html += '</table>';
     } else {
@@ -211,6 +243,8 @@ function showSection(id) {
   document.querySelector(`.navbar a[onclick*="${id}"]`).classList.add('active');
 }
 
-emailjs.init('qWKSfZ8aUnEMTgaL2');
-renderProductos();
-renderCuenta();
+window.addEventListener('DOMContentLoaded', () => {
+  emailjs.init('qWKSfZ8aUnEMTgaL2');
+  renderProductos();
+  renderCuenta();
+});
