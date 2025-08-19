@@ -47,28 +47,36 @@
   </aside>
   <div class="cart-bg" id="cart-bg" onclick="toggleCart(false)"></div>
 
-  <div class="modal" id="auth-modal">
-    <div class="modal-content">
-      <span onclick="closeAuth()" class="modal-close">&times;</span>
-      <h3 id="modal-title">Iniciar Sesión</h3>
-      <form id="auth-form" onsubmit="submitAuth(event)">
-        <div id="fields-register" style="display:none;">
-          <input type="text" id="auth-nombre" placeholder="Nombre"/>
-          <input type="text" id="auth-apellido" placeholder="Apellido"/>
-          <input type="email" id="auth-email" placeholder="Correo electrónico"/>
-          <input type="tel" id="auth-tel" placeholder="Teléfono"/>
-          <input type="text" id="auth-dir" placeholder="Dirección"/>
-          <input type="password" id="auth-pass" placeholder="Contraseña"/>
-        </div>
-        <div id="fields-login">
-          <input type="email" id="login-email" placeholder="Correo electrónico"/>
-          <input type="password" id="login-pass" placeholder="Contraseña"/>
-        </div>
-        <button type="submit" class="btn">Continuar</button>
-      </form>
-      <p id="toggle-auth">¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span></p>
-    </div>
+<div class="modal" id="auth-modal">
+  <div class="modal-content">
+    <span onclick="closeAuth()" class="modal-close">&times;</span>
+    <h3 id="modal-title">Iniciar Sesión</h3>
+
+    <form id="auth-form" onsubmit="submitAuth(event)">
+      <div id="fields-login">
+        <input type="email" id="login-email" placeholder="Correo electrónico" autocomplete="email" required />
+        <input type="password" id="login-pass" placeholder="Contraseña" autocomplete="current-password" required />
+      </div>
+
+      <div id="fields-register" style="display:none">
+        <input type="text" id="auth-nombre" placeholder="Nombre" required />
+        <input type="text" id="auth-apellido" placeholder="Apellido" required />
+        <input type="email" id="auth-email" placeholder="Correo electrónico" autocomplete="email" required />
+        <input type="tel" id="auth-tel" placeholder="Teléfono" required />
+        <input type="text" id="auth-dir" placeholder="Dirección" required />
+        <input type="password" id="auth-pass" placeholder="Contraseña" autocomplete="new-password" required />
+      </div>
+
+      <button type="submit" class="btn">Continuar</button>
+    </form>
+
+    <p id="toggle-auth" style="margin-top:.8rem">
+      ¿No tienes cuenta?
+      <a href="#" onclick="setAuthMode('register');return false;">Regístrate</a>
+    </p>
   </div>
+</div>
+
 
   <footer class="footer">© 2025 DC‑CARDSV BP — hecho con ❤️</footer>
 
