@@ -4,8 +4,8 @@ const productos = [
   { cod: 'itunes', nombre: 'Apple / iTunes', img: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg', descrip: 'Apps, música y más.', precios: [15,25,50,100,200] },
   { cod: 'gplay', nombre: 'Google Play', img: 'https://cdn.topuplive.com/uploads/images/goods/20240911/1726048096_PpXJIUWYpb.webp', descrip: 'Saldo Google Play.', precios: [10,25,50,100] },
   { cod: 'nintendo', nombre: 'Nintendo eShop', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-79.webp', descrip: 'Compra para Nintendo.', precios: [10,20,50] },
-  { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn.topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Diamantes Free Fire.', precios: [1,5,10,20,50] },
-  { cod: 'roblox', nombre: 'Roblox Gift Card', img: 'https://cdn.topuplive.com/cdn-cgi/image/format=webp/uploads/images/goods/20240808/1723099563_ksuTds2DK3.webp', descrip: 'Robux o Premium.', precios: [10,25,50] },
+  { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn-topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Diamantes Free Fire.', precios: [1,5,10,20,50] },
+  { cod: 'roblox', nombre: 'Roblox Gift Card', img: 'https://cdn-topuplive.com/cdn-cgi/image/format=webp/uploads/images/goods/20240808/1723099563_ksuTds2DK3.webp', descrip: 'Robux o Premium.', precios: [10,25,50] },
   { cod: 'steam', nombre: 'Steam Wallet', img: 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', descrip: 'Saldo Steam.', precios: [5,10,20,50,100] },
   { cod: 'amazon', nombre: 'Amazon Gift Card', img: 'https://i.ebayimg.com/images/g/luAAAeSwUqdoZwUW/s-l1600.webp', descrip: 'Compra en Amazon.', precios: [10,25,50,100,200] },
   { cod: 'fortnite', nombre: 'Fortnite V-Bucks', img: 'https://net-revolution.com/wp-content/uploads/Recargar-Fortnite-desde-Venezuela.png', descrip: 'V-Bucks Fortnite.', precios: [100,500] },
@@ -68,10 +68,8 @@ function checkout() {
   if (!carrito.length) return alert('Carrito vacío');
 
   const user = JSON.parse(localStorage.getItem('usuario'));
-  if (!user) {
-    document.getElementById('modal-title').textContent = 'Iniciar Sesión';
-    document.getElementById('auth-modal').style.display = 'flex';
-    switchAuth();
+  if (!user) {               
+    openAuth('login');
     return;
   }
 
@@ -84,65 +82,77 @@ function checkout() {
   };
   pedidos.push(nuevoPedido);
   localStorage.setItem('pedidos', JSON.stringify(pedidos));
+
   carrito = [];
   actualizarCarrito();
 
   const numeroVendedor = '50379553318';
   const total = nuevoPedido.items.reduce((sum, item) => sum + item.monto, 0);
   const mensaje = encodeURIComponent(
-    `¡Nuevo pedido recibido!\n\nCliente: ${user.nombre} ${user.apellido}\nEmail: ${user.email}\nTel: ${user.telefono}\nDirección: ${user.direccion}\nTotal: $${total} USD\n\nRevisa en tu panel de admin para más detalles.`
+    `¡Nuevo pedido recibido!\n\nCliente: ${user.nombre||''} ${user.apellido||''}\nEmail: ${user.email}\nTel: ${user.telefono||''}\nDirección: ${user.direccion||''}\nTotal: $${total} USD\n\nRevisa en tu panel de admin para más detalles.`
   );
   window.open(`https://wa.me/${numeroVendedor}?text=${mensaje}`, '_blank');
 
   alert('Pedido enviado. Revisa tu cuenta para más detalles.');
 }
 
+let AUTH_MODE = 'login';
+
+function openAuth(mode = 'login') {
+  setAuthMode(mode);
+  document.getElementById('auth-modal').style.display = 'flex';
+}
 function closeAuth() {
   document.getElementById('auth-modal').style.display = 'none';
 }
 
-function switchAuth() {
-  const regFields = document.getElementById('fields-register');
-  const logFields = document.getElementById('fields-login');
+function setAuthMode(mode) {
+  AUTH_MODE = (mode === 'register') ? 'register' : 'login';
+
+  const reg = document.getElementById('fields-register');
+  const log = document.getElementById('fields-login');
   const title = document.getElementById('modal-title');
   const toggle = document.getElementById('toggle-auth');
 
-  const isRegister = regFields.style.display !== 'none' && regFields.style.display !== '';
-  if (isRegister) {
+  if (AUTH_MODE === 'login') {
     title.textContent = 'Iniciar Sesión';
-    regFields.style.display = 'none';
-    logFields.style.display = '';
-    toggle.innerHTML = `¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span>`;
+    log.style.display = '';
+    reg.style.display = 'none';
+    toggle.innerHTML = `¿No tienes cuenta? <a href="#" onclick="setAuthMode('register');return false;">Regístrate</a>`;
   } else {
     title.textContent = 'Registrarse';
-    regFields.style.display = '';
-    logFields.style.display = 'none';
-    toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="switchAuth()">Iniciar Sesión</span>`;
+    log.style.display = 'none';
+    reg.style.display = '';
+    toggle.innerHTML = `¿Ya tienes cuenta? <a href="#" onclick="setAuthMode('login');return false;">Iniciar Sesión</a>`;
   }
 }
 
 function submitAuth(e) {
   e.preventDefault();
-  const isLogin = document.getElementById('modal-title').textContent === 'Iniciar Sesión';
   const users = JSON.parse(localStorage.getItem('usuarios') || '{}');
 
-  if (isLogin) {
-    const email = document.getElementById('login-email').value.trim();
-    const pass = document.getElementById('login-pass').value;
-    if (!users[email] || users[email].pass !== pass) return alert('Credenciales inválidas');
-    localStorage.setItem('usuario', JSON.stringify({ email, ...users[email] }));
+  if (AUTH_MODE === 'login') {
+    const em = document.getElementById('login-email').value.trim();
+    const pw = document.getElementById('login-pass').value;
+    if (!users[em] || users[em].pass !== pw) { alert('Credenciales inválidas'); return; }
+    localStorage.setItem('usuario', JSON.stringify({ email: em, ...users[em] }));
     alert('Sesión iniciada');
   } else {
-    const nombre = document.getElementById('auth-nombre').value.trim();
-    const apellido = document.getElementById('auth-apellido').value.trim();
-    const email = document.getElementById('auth-email').value.trim();
-    const tel = document.getElementById('auth-tel').value.trim();
-    const dir = document.getElementById('auth-dir').value.trim();
-    const pass = document.getElementById('auth-pass').value;
-    if (users[email]) return alert('Usuario ya registrado');
-    users[email] = { nombre, apellido, telefono: tel, direccion: dir, pass, role: email.endsWith('@admin.com') ? 'admin' : 'cliente' };
+    const nm = document.getElementById('auth-nombre').value.trim();
+    const ap = document.getElementById('auth-apellido').value.trim();
+    const em = document.getElementById('auth-email').value.trim();
+    const tl = document.getElementById('auth-tel').value.trim();
+    const di = document.getElementById('auth-dir').value.trim();
+    const pw = document.getElementById('auth-pass').value;
+
+    if (users[em]) { alert('Usuario ya registrado'); return; }
+
+    users[em] = {
+      nombre: nm, apellido: ap, telefono: tl, direccion: di, pass: pw,
+      role: em.endsWith('@admin.com') ? 'admin' : 'cliente'
+    };
     localStorage.setItem('usuarios', JSON.stringify(users));
-    localStorage.setItem('usuario', JSON.stringify({ email, ...users[email] }));
+    localStorage.setItem('usuario', JSON.stringify({ email: em, ...users[em] }));
     alert('Registro exitoso');
   }
 
@@ -156,17 +166,17 @@ function renderCuenta() {
 
   if (!user) {
     sec.innerHTML = `
-      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('register')">Registrarse</button>
-      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('login')">Iniciar Sesión</button>
+      <button onclick="openAuth('register')">Registrarse</button>
+      <button onclick="openAuth('login')">Iniciar Sesión</button>
     `;
     return;
   }
 
   let html = `
-    <p><strong>${user.nombre} ${user.apellido}</strong></p>
+    <p><strong>${user.nombre||''} ${user.apellido||''}</strong></p>
     <p>Email: ${user.email}</p>
-    <p>Tel: ${user.telefono}</p>
-    <p>Dir: ${user.direccion}</p>
+    <p>Tel: ${user.telefono||''}</p>
+    <p>Dir: ${user.direccion||''}</p>
     <button onclick="logout()">Cerrar sesión</button>
     <h3>Pedidos</h3>
   `;
@@ -197,7 +207,6 @@ function renderCuenta() {
 
   sec.innerHTML = html;
 }
-
 
 function logout() {
   localStorage.removeItem('usuario');
