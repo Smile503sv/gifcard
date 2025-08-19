@@ -28,7 +28,6 @@ const productos = [
 
 let carrito = [];
 
-// Renderizar productos
 function renderProductos() {
   const cont = document.getElementById('products-container');
   cont.innerHTML = '';
@@ -48,20 +47,17 @@ function renderProductos() {
   });
 }
 
-// Agregar al carrito
 function agregarCarrito(i) {
   const monto = +document.getElementById(`monto-${i}`).value;
   carrito.push({ nombre: productos[i].nombre, monto });
   actualizarCarrito();
 }
 
-// Mostrar/Ocultar carrito
 function toggleCart(open) {
   document.getElementById('cart-panel').classList.toggle('open', open);
   document.getElementById('cart-bg').classList.toggle('open', open);
 }
 
-// Actualizar carrito
 function actualizarCarrito() {
   const cont = document.getElementById('cart-items');
   cont.innerHTML = carrito
@@ -71,7 +67,6 @@ function actualizarCarrito() {
     'Total: $' + carrito.reduce((a, b) => a + b.monto, 0) + ' USD';
 }
 
-// Finalizar compra y abrir WhatsApp
 function checkout() {
   if (!carrito.length) return alert('Carrito vacío');
 
@@ -96,12 +91,10 @@ function checkout() {
   window.open(url, '_blank');
 }
 
-// Cerrar modal auth
 function closeAuth() {
   document.getElementById('auth-modal').style.display = 'none';
 }
 
-// Alternar modo login/register
 function setAuthMode(mode) {
   const regFields = document.getElementById('fields-register');
   const logFields = document.getElementById('fields-login');
@@ -121,7 +114,6 @@ function setAuthMode(mode) {
   }
 }
 
-// Enviar formulario de autenticación
 function submitAuth(e) {
   e.preventDefault();
   const isLogin = document.getElementById('modal-title').textContent === 'Iniciar Sesión';
@@ -151,15 +143,14 @@ function submitAuth(e) {
   renderCuenta();
 }
 
-// Render cuenta
 function renderCuenta() {
   const user = JSON.parse(localStorage.getItem('usuario'));
   const sec = document.getElementById('cuenta-content');
 
   if (!user) {
     sec.innerHTML = `
-      <button onclick="document.getElementById('modal-title').textContent='Registrarse';document.getElementById('auth-modal').style.display='flex';setAuthMode('register')">Registrarse</button>
-      <button onclick="document.getElementById('modal-title').textContent='Iniciar Sesión';document.getElementById('auth-modal').style.display='flex';setAuthMode('login')">Iniciar Sesión</button>
+      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('register')">Registrarse</button>
+      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('login')">Iniciar Sesión</button>
     `;
     return;
   }
@@ -200,13 +191,12 @@ function renderCuenta() {
   sec.innerHTML = html;
 }
 
-// Cerrar sesión
+
 function logout() {
   localStorage.removeItem('usuario');
   renderCuenta();
 }
 
-// Cambiar estado pedido
 function cambiarEstado(i) {
   const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
   const estados = ['pendiente', 'completado', 'reembolsado'];
@@ -216,7 +206,6 @@ function cambiarEstado(i) {
   renderCuenta();
 }
 
-// Mostrar sección
 function showSection(id) {
   document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
   document.getElementById(id).style.display = '';
@@ -224,6 +213,5 @@ function showSection(id) {
   document.querySelector(`.navbar a[onclick*="${id}"]`).classList.add('active');
 }
 
-// Inicializar
 renderProductos();
 renderCuenta();
