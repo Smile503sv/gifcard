@@ -1,7 +1,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.6)), url('../assets/gaming-bg.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.6)), url('./assets/gaming-bg.jpg') center/cover no-repeat;
   color: #eee;
   overflow-x: hidden;
 }
@@ -124,16 +124,4 @@ td {
 }
 .button-complete:hover {
   background:#1fa354;
-}
-
-/* NUEVO: Estilo para la sección de formas de pago */
-.payment-info {
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  border-radius: 6px;
-  margin-top: 1.5rem;
-}
-.payment-info h3 {
-  color: #e30613;
-  margin-bottom: .5rem;
 }
