@@ -1,4 +1,3 @@
-// ===== Productos disponibles =====
 const productos = [
   { cod: 'play', nombre: 'PlayStation Store', img: 'https://i.ebayimg.com/images/g/8kEAAOSw4H5oBwax/s-l1600.webp', descrip: 'Recarga tu cuenta PlayStation.', precios: [10,25,50,100] },
   { cod: 'xbox', nombre: 'Xbox Gift Card', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-81.webp', descrip: 'Saldo Xbox.', precios: [10,25,50] },
@@ -87,14 +86,18 @@ function closeAuth() {
 }
 
 function setAuthMode(mode) {
-  const reg = document.getElementById('fields-register'), log = document.getElementById('fields-login'),
-        title = document.getElementById('modal-title'), toggle = document.getElementById('toggle-auth');
+  const reg = document.getElementById('fields-register'),
+        log = document.getElementById('fields-login'),
+        title = document.getElementById('modal-title'),
+        toggle = document.getElementById('toggle-auth');
   if (mode === 'login') {
     title.textContent = 'Iniciar Sesión';
-    reg.style.display = 'none'; log.style.display = ''; toggle.innerHTML = `¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>`;
+    reg.style.display = 'none'; log.style.display = '';
+    toggle.innerHTML = `¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>`;
   } else {
     title.textContent = 'Registrarse';
-    reg.style.display = ''; log.style.display = 'none'; toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="setAuthMode('login')">Iniciar Sesión</span>`;
+    reg.style.display = ''; log.style.display = 'none';
+    toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="setAuthMode('login')">Iniciar Sesión</span>`;
   }
 }
 
@@ -135,9 +138,13 @@ function generarCodigo() {
 }
 
 function enviarCodigo(email, id, codigo) {
-  emailjs.send('service_i5vt2sq', 'template_order_confirmed', { to_email: email, order_id: id, codigo })
-    .then(() => alert(`Correo reenviado a ${email} con código: ${codigo}`))
-    .catch(() => alert('Error enviando correo'));
+  emailjs.send('service_i5vt2sq', 'template_order_confirmed', {
+    to_email: email,
+    order_id: id,
+    codigo: codigo
+  })
+  .then(() => alert(`Correo enviado a ${email} con código: ${codigo}`))
+  .catch(() => alert('Error enviando correo'));
 }
 
 function copiarCodigo(codigo) {
@@ -204,7 +211,6 @@ function showSection(id) {
   document.querySelector(`.navbar a[onclick*="${id}"]`).classList.add('active');
 }
 
-// Inicializar
 emailjs.init('qWKSfZ8aUnEMTgaL2');
 renderProductos();
 renderCuenta();
