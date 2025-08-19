@@ -48,14 +48,20 @@ function renderProductos() {
   });
 }
 
-// Agregar productos al carrito
+// Agregar al carrito
 function agregarCarrito(i) {
   const monto = +document.getElementById(`monto-${i}`).value;
   carrito.push({ nombre: productos[i].nombre, monto });
   actualizarCarrito();
 }
 
-// Actualizar display del carrito
+// Mostrar/Ocultar carrito
+function toggleCart(open) {
+  document.getElementById('cart-panel').classList.toggle('open', open);
+  document.getElementById('cart-bg').classList.toggle('open', open);
+}
+
+// Actualizar carrito
 function actualizarCarrito() {
   const cont = document.getElementById('cart-items');
   cont.innerHTML = carrito
@@ -65,57 +71,57 @@ function actualizarCarrito() {
     'Total: $' + carrito.reduce((a, b) => a + b.monto, 0) + ' USD';
 }
 
-// Mostrar/Ocultar carrito
-function toggleCart(open) {
-  document.getElementById('cart-panel').classList.toggle('open', open);
-  document.getElementById('cart-bg').classList.toggle('open', open);
-}
-
-// Finalizar compra con verificación de usuario
+// Finalizar compra y abrir WhatsApp
 function checkout() {
   if (!carrito.length) return alert('Carrito vacío');
+
   const user = JSON.parse(localStorage.getItem('usuario'));
   if (!user) {
     document.getElementById('modal-title').textContent = 'Iniciar Sesión';
     document.getElementById('auth-modal').style.display = 'flex';
-    switchAuth(); // Asegura que el formulario esté en modo login
+    setAuthMode('login');
     return;
   }
-  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
-  pedidos.push({ id: Date.now(), email: user.email, items: carrito, estado: 'pendiente' });
-  localStorage.setItem('pedidos', JSON.stringify(pedidos));
+
+  const resumen = carrito.map(item => `• ${item.nombre} - $${item.monto} USD`).join('\n');
+  const total = carrito.reduce((a, b) => a + b.monto, 0);
+  const mensaje = `Hola, soy ${user.nombre} ${user.apellido}. Quiero hacer un pedido:\n\n${resumen}\n\nTotal: $${total} USD\n\nMétodo de pago: Efectivo o Transferencia`;
+
+  const numeroWhatsApp = '50379553318';
+  const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
   carrito = [];
   actualizarCarrito();
-  alert('Pedido enviado. Revísalo en "Mi Cuenta".');
+
+  window.open(url, '_blank');
 }
 
-// Cerrar modal
+// Cerrar modal auth
 function closeAuth() {
   document.getElementById('auth-modal').style.display = 'none';
 }
 
-// Cambiar entre Registro e Inicio de Sesión
-function switchAuth() {
+// Alternar modo login/register
+function setAuthMode(mode) {
   const regFields = document.getElementById('fields-register');
   const logFields = document.getElementById('fields-login');
   const title = document.getElementById('modal-title');
   const toggle = document.getElementById('toggle-auth');
 
-  const isRegister = regFields.style.display !== 'none' && regFields.style.display !== '';
-  if (isRegister) {
+  if (mode === 'login') {
     title.textContent = 'Iniciar Sesión';
     regFields.style.display = 'none';
     logFields.style.display = '';
-    toggle.innerHTML = `¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span>`;
+    toggle.innerHTML = `¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>`;
   } else {
     title.textContent = 'Registrarse';
     regFields.style.display = '';
     logFields.style.display = 'none';
-    toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="switchAuth()">Iniciar Sesión</span>`;
+    toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="setAuthMode('login')">Iniciar Sesión</span>`;
   }
 }
 
-// Enviar y procesar formulario de auth
+// Enviar formulario de autenticación
 function submitAuth(e) {
   e.preventDefault();
   const isLogin = document.getElementById('modal-title').textContent === 'Iniciar Sesión';
@@ -145,15 +151,15 @@ function submitAuth(e) {
   renderCuenta();
 }
 
-// Renderiza sección "Mi Cuenta"
+// Render cuenta
 function renderCuenta() {
   const user = JSON.parse(localStorage.getItem('usuario'));
   const sec = document.getElementById('cuenta-content');
 
   if (!user) {
     sec.innerHTML = `
-      <button onclick="document.getElementById('modal-title').textContent='Registrarse';document.getElementById('auth-modal').style.display='flex';switchAuth()">Registrarse</button>
-      <button onclick="document.getElementById('modal-title').textContent='Iniciar Sesión';document.getElementById('auth-modal').style.display='flex';switchAuth()">Iniciar Sesión</button>
+      <button onclick="document.getElementById('modal-title').textContent='Registrarse';document.getElementById('auth-modal').style.display='flex';setAuthMode('register')">Registrarse</button>
+      <button onclick="document.getElementById('modal-title').textContent='Iniciar Sesión';document.getElementById('auth-modal').style.display='flex';setAuthMode('login')">Iniciar Sesión</button>
     `;
     return;
   }
@@ -200,7 +206,7 @@ function logout() {
   renderCuenta();
 }
 
-// Cambiar estado del pedido (solo admin)
+// Cambiar estado pedido
 function cambiarEstado(i) {
   const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
   const estados = ['pendiente', 'completado', 'reembolsado'];
@@ -210,7 +216,7 @@ function cambiarEstado(i) {
   renderCuenta();
 }
 
-// Mostrar solo una sección en pantalla
+// Mostrar sección
 function showSection(id) {
   document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
   document.getElementById(id).style.display = '';
@@ -218,6 +224,6 @@ function showSection(id) {
   document.querySelector(`.navbar a[onclick*="${id}"]`).classList.add('active');
 }
 
-// Inicialización
+// Inicializar
 renderProductos();
 renderCuenta();
