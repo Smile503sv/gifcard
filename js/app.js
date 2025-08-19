@@ -1,4 +1,3 @@
-// ===== Productos disponibles =====
 const productos = [
   { cod: 'play', nombre: 'PlayStation Store', img: 'https://i.ebayimg.com/images/g/8kEAAOSw4H5oBwax/s-l1600.webp', descrip: 'Recarga tu cuenta PlayStation.', precios: [10,25,50,100] },
   { cod: 'xbox', nombre: 'Xbox Gift Card', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-81.webp', descrip: 'Saldo Xbox.', precios: [10,25,50] },
@@ -25,6 +24,7 @@ const productos = [
   { cod: 'target', nombre: 'Target Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Target.webp', descrip: 'Compras Target.', precios: [25,50] },
   { cod: 'ebay', nombre: 'eBay Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/eBay.webp', descrip: 'Comprar en eBay.', precios: [25,50] }
 ];
+
 
 let carrito = [];
 
@@ -53,23 +53,20 @@ function agregarCarrito(i) {
   actualizarCarrito();
 }
 
+function actualizarCarrito() {
+  const cont = document.getElementById('cart-items');
+  cont.innerHTML = carrito.map(item => `<div>${item.nombre} - $${item.monto} USD</div>`).join('');
+  document.getElementById('cart-total').textContent =
+    'Total: $' + carrito.reduce((a, b) => a + b.monto, 0) + ' USD';
+}
+
 function toggleCart(open) {
   document.getElementById('cart-panel').classList.toggle('open', open);
   document.getElementById('cart-bg').classList.toggle('open', open);
 }
 
-function actualizarCarrito() {
-  const cont = document.getElementById('cart-items');
-  cont.innerHTML = carrito
-    .map(item => `<div>${item.nombre} - $${item.monto} USD</div>`)
-    .join('');
-  document.getElementById('cart-total').textContent =
-    'Total: $' + carrito.reduce((a, b) => a + b.monto, 0) + ' USD';
-}
-
 function checkout() {
   if (!carrito.length) return alert('Carrito vacío');
-
   const user = JSON.parse(localStorage.getItem('usuario'));
   if (!user) {
     document.getElementById('modal-title').textContent = 'Iniciar Sesión';
@@ -78,16 +75,17 @@ function checkout() {
     return;
   }
 
-  const resumen = carrito.map(item => `• ${item.nombre} - $${item.monto} USD`).join('\n');
-  const total = carrito.reduce((a, b) => a + b.monto, 0);
-  const mensaje = `Hola, soy ${user.nombre} ${user.apellido}. Quiero hacer un pedido:\n\n${resumen}\n\nTotal: $${total} USD\n\nMétodo de pago: Efectivo o Transferencia`;
-
-  const numeroWhatsApp = '50379553318';
-  const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-
+  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
+  const order = { id: Date.now(), email: user.email, items: carrito, estado: 'pendiente' };
+  pedidos.push(order);
+  localStorage.setItem('pedidos', JSON.stringify(pedidos));
   carrito = [];
   actualizarCarrito();
 
+  const resumen = order.items.map(it => `• ${it.nombre} - $${it.monto} USD`).join('\n');
+  const total = order.items.reduce((sum, it) => sum + it.monto, 0);
+  const mensaje = `Hola, soy ${user.nombre} ${user.apellido}. Quiero hacer un pedido:\n\n${resumen}\n\nTotal: $${total} USD\n\nMétodo de pago: Efectivo o Transferencia`;
+  const url = `https://wa.me/50379553318?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
 }
 
@@ -143,6 +141,51 @@ function submitAuth(e) {
   renderCuenta();
 }
 
+function logout() {
+  localStorage.removeItem('usuario');
+  renderCuenta();
+}
+
+function generarCodigo() {
+  return 'DC-' + Math.random().toString(36).substr(2, 10).toUpperCase();
+}
+
+function copiarCodigo(codigo) {
+  navigator.clipboard.writeText(codigo).then(() => {
+    alert(`Código copiado: ${codigo}`);
+  }).catch(err => {
+    console.error('Error copiando:', err);
+    alert('No se pudo copiar el código');
+  });
+}
+
+function cambiarEstado(i) {
+  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
+  const pedido = pedidos[i];
+  const estados = ['pendiente', 'completado', 'reembolsado'];
+  const idx = estados.indexOf(pedido.estado);
+  pedido.estado = estados[(idx + 1) % estados.length];
+
+  if (pedido.estado === 'completado') {
+    const codigo = generarCodigo();
+    pedido.codigo = codigo;
+
+    emailjs.send('service_i5vt2sq', 'template_order_confirmed', {
+      to_email: pedido.email,
+      order_id: pedido.id,
+      codigo: codigo
+    }).then(() => {
+      alert(`Correo enviado a ${pedido.email} con el código: ${codigo}`);
+    }).catch(err => {
+      console.error('Error enviando correo:', err);
+      alert('Fallo al enviar correo');
+    });
+  }
+
+  localStorage.setItem('pedidos', JSON.stringify(pedidos));
+  renderCuenta();
+}
+
 function renderCuenta() {
   const user = JSON.parse(localStorage.getItem('usuario'));
   const sec = document.getElementById('cuenta-content');
@@ -164,46 +207,40 @@ function renderCuenta() {
     <h3>Pedidos</h3>
   `;
 
-  const pedidos = JSON.parse(localStorage.getItem('pedidos')||'[]');
+  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
+
   if (user.role === 'admin') {
     html += `<table>
-      <tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Acción</th></tr>`;
-    pedidos.forEach((p,i) => {
-      html += `
-        <tr>
-          <td>${p.id}</td>
-          <td>${p.email}</td>
-          <td>${p.estado}</td>
-          <td><button class="button-small button-complete" onclick="cambiarEstado(${i})">Cambiar</button></td>
-        </tr>`;
+      <tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Código</th><th>Acción</th></tr>`;
+    pedidos.forEach((p, i) => {
+      html += `<tr>
+        <td>${p.id}</td><td>${p.email}</td><td>${p.estado}</td>
+        <td>${p.codigo || '-'}</td>
+        <td><button class="button-small button-complete" onclick="cambiarEstado(${i})">Cambiar</button></td></tr>`;
     });
     html += `</table>`;
   } else {
-    html += `<table>
-      <tr><th>ID</th><th>Estado</th></tr>`;
-    pedidos.filter(p => p.email === user.email)
-      .forEach(p => {
-        html += `<tr><td>${p.id}</td><td>${p.estado}</td></tr>`;
+    const misPedidos = pedidos.filter(p => p.email === user.email);
+    if (misPedidos.length) {
+      html += `<table>
+        <tr><th>ID</th><th>Estado</th><th>Código</th></tr>`;
+      misPedidos.forEach(p => {
+        html += `<tr>
+          <td>${p.id}</td><td>${p.estado}</td>
+          <td>${
+            p.estado === 'completado' && p.codigo
+              ? `<span style="color:#25d366;font-weight:bold">${p.codigo}</span>
+                 <button onclick="copiarCodigo('${p.codigo}')" class="button-small">📋 Copiar</button>`
+              : '-'
+          }</td></tr>`;
       });
-    html += `</table>`;
+      html += `</table>`;
+    } else {
+      html += `<p>Aún no has realizado ningún pedido.</p>`;
+    }
   }
 
   sec.innerHTML = html;
-}
-
-
-function logout() {
-  localStorage.removeItem('usuario');
-  renderCuenta();
-}
-
-function cambiarEstado(i) {
-  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
-  const estados = ['pendiente', 'completado', 'reembolsado'];
-  const idx = estados.indexOf(pedidos[i].estado);
-  pedidos[i].estado = estados[(idx + 1) % estados.length];
-  localStorage.setItem('pedidos', JSON.stringify(pedidos));
-  renderCuenta();
 }
 
 function showSection(id) {
@@ -213,5 +250,6 @@ function showSection(id) {
   document.querySelector(`.navbar a[onclick*="${id}"]`).classList.add('active');
 }
 
+emailjs.init("qWKSfZ8aUnEMTgaL2");
 renderProductos();
 renderCuenta();
