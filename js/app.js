@@ -1,10 +1,11 @@
+// ===== Productos disponibles =====
 const productos = [
   { cod: 'play', nombre: 'PlayStation Store', img: 'https://i.ebayimg.com/images/g/8kEAAOSw4H5oBwax/s-l1600.webp', descrip: 'Recarga tu cuenta PlayStation.', precios: [10,25,50,100] },
   { cod: 'xbox', nombre: 'Xbox Gift Card', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-81.webp', descrip: 'Saldo Xbox.', precios: [10,25,50] },
   { cod: 'itunes', nombre: 'Apple / iTunes', img: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg', descrip: 'Apps, música y más.', precios: [15,25,50] },
   { cod: 'gplay', nombre: 'Google Play', img: 'https://cdn.topuplive.com/uploads/images/goods/20240911/1726048096_PpXJIUWYpb.webp', descrip: 'Saldo Google Play.', precios: [10,25,50] },
   { cod: 'nintendo', nombre: 'Nintendo eShop', img: 'https://cdn.topuplive.com/uploads/images/goods/v4/f/F-79.webp', descrip: 'Compra para Nintendo.', precios: [10,20,50] },
-  { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn.topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Diamantes Free Fire.', precios: [100,310,520] },
+  { cod: 'freefire', nombre: 'Free Fire Diamonds', img: 'https://cdn-topuplive.com/uploads/images/goods/20241023/1729667219_hMwSxSTqq6.webp', descrip: 'Diamantes Free Fire.', precios: [100,310,520] },
   { cod: 'roblox', nombre: 'Roblox Gift Card', img: 'https://cdn-topuplive.com/uploads/images/goods/v4/f/F-153.webp', descrip: 'Robux o Premium.', precios: [10,25,50] },
   { cod: 'steam', nombre: 'Steam Wallet', img: 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', descrip: 'Saldo Steam.', precios: [5,10,20,50] },
   { cod: 'amazon', nombre: 'Amazon Gift Card', img: 'https://i.ebayimg.com/images/g/luAAAeSwUqdoZwUW/s-l1600.webp', descrip: 'Compra en Amazon.', precios: [10,25,50] },
@@ -24,7 +25,6 @@ const productos = [
   { cod: 'target', nombre: 'Target Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/Target.webp', descrip: 'Compras Target.', precios: [25,50] },
   { cod: 'ebay', nombre: 'eBay Gift Card', img: 'https://cdn.coinsbee.com/version2/dist/assets/img/brands/eBay.webp', descrip: 'Comprar en eBay.', precios: [25,50] }
 ];
-
 
 let carrito = [];
 
@@ -56,8 +56,7 @@ function agregarCarrito(i) {
 function actualizarCarrito() {
   const cont = document.getElementById('cart-items');
   cont.innerHTML = carrito.map(item => `<div>${item.nombre} - $${item.monto} USD</div>`).join('');
-  document.getElementById('cart-total').textContent =
-    'Total: $' + carrito.reduce((a, b) => a + b.monto, 0) + ' USD';
+  document.getElementById('cart-total').textContent = 'Total: $' + carrito.reduce((a, b) => a + b.monto, 0) + ' USD';
 }
 
 function toggleCart(open) {
@@ -74,19 +73,13 @@ function checkout() {
     setAuthMode('login');
     return;
   }
-
   const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
   const order = { id: Date.now(), email: user.email, items: carrito, estado: 'pendiente' };
   pedidos.push(order);
   localStorage.setItem('pedidos', JSON.stringify(pedidos));
   carrito = [];
   actualizarCarrito();
-
-  const resumen = order.items.map(it => `• ${it.nombre} - $${it.monto} USD`).join('\n');
-  const total = order.items.reduce((sum, it) => sum + it.monto, 0);
-  const mensaje = `Hola, soy ${user.nombre} ${user.apellido}. Quiero hacer un pedido:\n\n${resumen}\n\nTotal: $${total} USD\n\nMétodo de pago: Efectivo o Transferencia`;
-  const url = `https://wa.me/50379553318?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, '_blank');
+  alert('Pedido enviado. Revisa tu cuenta para más detalles.');
 }
 
 function closeAuth() {
@@ -94,21 +87,14 @@ function closeAuth() {
 }
 
 function setAuthMode(mode) {
-  const regFields = document.getElementById('fields-register');
-  const logFields = document.getElementById('fields-login');
-  const title = document.getElementById('modal-title');
-  const toggle = document.getElementById('toggle-auth');
-
+  const reg = document.getElementById('fields-register'), log = document.getElementById('fields-login'),
+        title = document.getElementById('modal-title'), toggle = document.getElementById('toggle-auth');
   if (mode === 'login') {
     title.textContent = 'Iniciar Sesión';
-    regFields.style.display = 'none';
-    logFields.style.display = '';
-    toggle.innerHTML = `¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>`;
+    reg.style.display = 'none'; log.style.display = ''; toggle.innerHTML = `¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>`;
   } else {
     title.textContent = 'Registrarse';
-    regFields.style.display = '';
-    logFields.style.display = 'none';
-    toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="setAuthMode('login')">Iniciar Sesión</span>`;
+    reg.style.display = ''; log.style.display = 'none'; toggle.innerHTML = `¿Ya tienes cuenta? <span onclick="setAuthMode('login')">Iniciar Sesión</span>`;
   }
 }
 
@@ -116,27 +102,25 @@ function submitAuth(e) {
   e.preventDefault();
   const isLogin = document.getElementById('modal-title').textContent === 'Iniciar Sesión';
   const users = JSON.parse(localStorage.getItem('usuarios') || '{}');
-
   if (isLogin) {
-    const email = document.getElementById('login-email').value.trim();
-    const pass = document.getElementById('login-pass').value;
-    if (!users[email] || users[email].pass !== pass) return alert('Credenciales inválidas');
-    localStorage.setItem('usuario', JSON.stringify({ email, ...users[email] }));
+    const em = document.getElementById('login-email').value.trim(),
+          pw = document.getElementById('login-pass').value;
+    if (!users[em] || users[em].pass !== pw) return alert('Credenciales inválidas');
+    localStorage.setItem('usuario', JSON.stringify({ email: em, ...users[em] }));
     alert('Sesión iniciada');
   } else {
-    const nombre = document.getElementById('auth-nombre').value.trim();
-    const apellido = document.getElementById('auth-apellido').value.trim();
-    const email = document.getElementById('auth-email').value.trim();
-    const tel = document.getElementById('auth-tel').value.trim();
-    const dir = document.getElementById('auth-dir').value.trim();
-    const pass = document.getElementById('auth-pass').value;
-    if (users[email]) return alert('Usuario ya registrado');
-    users[email] = { nombre, apellido, telefono: tel, direccion: dir, pass, role: email.endsWith('@admin.com') ? 'admin' : 'cliente' };
+    const nm = document.getElementById('auth-nombre').value.trim(),
+          ap = document.getElementById('auth-apellido').value.trim(),
+          em = document.getElementById('auth-email').value.trim(),
+          tl = document.getElementById('auth-tel').value.trim(),
+          di = document.getElementById('auth-dir').value.trim(),
+          pw = document.getElementById('auth-pass').value;
+    if (users[em]) return alert('Usuario ya registrado');
+    users[em] = { nombre: nm, apellido: ap, telefono: tl, direccion: di, pass: pw, role: em.endsWith('@admin.com') ? 'admin' : 'cliente' };
     localStorage.setItem('usuarios', JSON.stringify(users));
-    localStorage.setItem('usuario', JSON.stringify({ email, ...users[email] }));
+    localStorage.setItem('usuario', JSON.stringify({ email: em, ...users[em] }));
     alert('Registro exitoso');
   }
-
   closeAuth();
   renderCuenta();
 }
@@ -150,106 +134,77 @@ function generarCodigo() {
   return 'DC-' + Math.random().toString(36).substr(2, 10).toUpperCase();
 }
 
+function enviarCodigo(email, id, codigo) {
+  emailjs.send('service_i5vt2sq', 'template_order_confirmed', { to_email: email, order_id: id, codigo })
+    .then(() => alert(`Correo reenviado a ${email} con código: ${codigo}`))
+    .catch(() => alert('Error enviando correo'));
+}
+
 function copiarCodigo(codigo) {
-  navigator.clipboard.writeText(codigo).then(() => {
-    alert(`Código copiado: ${codigo}`);
-  }).catch(err => {
-    console.error('Error copiando:', err);
-    alert('No se pudo copiar el código');
-  });
+  navigator.clipboard.writeText(codigo).then(() => alert(`Copiado: ${codigo}`));
 }
 
 function cambiarEstado(i) {
-  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
-  const pedido = pedidos[i];
-  const estados = ['pendiente', 'completado', 'reembolsado'];
-  const idx = estados.indexOf(pedido.estado);
-  pedido.estado = estados[(idx + 1) % estados.length];
-
-  if (pedido.estado === 'completado') {
-    const codigo = generarCodigo();
-    pedido.codigo = codigo;
-
-    emailjs.send('service_i5vt2sq', 'template_order_confirmed', {
-      to_email: pedido.email,
-      order_id: pedido.id,
-      codigo: codigo
-    }).then(() => {
-      alert(`Correo enviado a ${pedido.email} con el código: ${codigo}`);
-    }).catch(err => {
-      console.error('Error enviando correo:', err);
-      alert('Fallo al enviar correo');
-    });
+  const ped = JSON.parse(localStorage.getItem('pedidos') || '[]');
+  const est = ['pendiente', 'completado', 'reembolsado'];
+  const j = est.indexOf(ped[i].estado);
+  const nuevo = est[(j + 1) % est.length];
+  ped[i].estado = nuevo;
+  if (nuevo === 'completado') {
+    const code = generarCodigo();
+    ped[i].codigo = code;
+    enviarCodigo(ped[i].email, ped[i].id, code);
   }
-
-  localStorage.setItem('pedidos', JSON.stringify(pedidos));
+  localStorage.setItem('pedidos', JSON.stringify(ped));
   renderCuenta();
 }
 
 function renderCuenta() {
   const user = JSON.parse(localStorage.getItem('usuario'));
   const sec = document.getElementById('cuenta-content');
-
   if (!user) {
-    sec.innerHTML = `
-      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('register')">Registrarse</button>
-      <button onclick="document.getElementById('auth-modal').style.display='flex'; setAuthMode('login')">Iniciar Sesión</button>
-    `;
+    sec.innerHTML = `<button onclick="setAuthMode('register'); document.getElementById('auth-modal').style.display='flex'">Registrarse</button>
+                     <button onclick="setAuthMode('login'); document.getElementById('auth-modal').style.display='flex'">Iniciar Sesión</button>`;
     return;
   }
-
-  let html = `
-    <p><strong>${user.nombre} ${user.apellido}</strong></p>
-    <p>Email: ${user.email}</p>
-    <p>Tel: ${user.telefono}</p>
-    <p>Dir: ${user.direccion}</p>
-    <button onclick="logout()">Cerrar sesión</button>
-    <h3>Pedidos</h3>
-  `;
-
-  const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
-
+  let html = `<p><strong>${user.nombre} ${user.apellido}</strong></p><p>Email: ${user.email}</p>
+              <p>Tel: ${user.telefono}</p><p>Dir: ${user.direccion}</p>
+              <button onclick="logout()">Cerrar sesión</button><h3>Pedidos</h3>`;
+  const ped = JSON.parse(localStorage.getItem('pedidos') || '[]');
   if (user.role === 'admin') {
-    html += `<table>
-      <tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Código</th><th>Acción</th></tr>`;
-    pedidos.forEach((p, i) => {
-      html += `<tr>
-        <td>${p.id}</td><td>${p.email}</td><td>${p.estado}</td>
-        <td>${p.codigo || '-'}</td>
-        <td><button class="button-small button-complete" onclick="cambiarEstado(${i})">Cambiar</button></td></tr>`;
+    html += '<table><tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Código</th><th>Acción</th></tr>';
+    ped.forEach((p,i) => {
+      html += `<tr><td>${p.id}</td><td>${p.email}</td><td>${p.estado}</td>
+               <td>${p.codigo||'-'}</td><td><button onclick="cambiarEstado(${i})">Cambiar</button></td></tr>`;
     });
-    html += `</table>`;
+    html += '</table>';
   } else {
-    const misPedidos = pedidos.filter(p => p.email === user.email);
-    if (misPedidos.length) {
-      html += `<table>
-        <tr><th>ID</th><th>Estado</th><th>Código</th></tr>`;
-      misPedidos.forEach(p => {
-        html += `<tr>
-          <td>${p.id}</td><td>${p.estado}</td>
-          <td>${
-            p.estado === 'completado' && p.codigo
-              ? `<span style="color:#25d366;font-weight:bold">${p.codigo}</span>
-                 <button onclick="copiarCodigo('${p.codigo}')" class="button-small">📋 Copiar</button>`
-              : '-'
-          }</td></tr>`;
+    const mis = ped.filter(p => p.email === user.email);
+    if (mis.length) {
+      html += '<table><tr><th>ID</th><th>Estado</th><th>Código</th></tr>';
+      mis.forEach(p => {
+        html += `<tr><td>${p.id}</td><td>${p.estado}</td><td>${
+          p.estado === 'completado' && p.codigo
+            ? `<strong style="color:#25d366">${p.codigo}</strong> <button onclick="copiarCodigo('${p.codigo}')">📋 Copiar</button>`
+            : '-'
+        }</td></tr>`;
       });
-      html += `</table>`;
+      html += '</table>';
     } else {
-      html += `<p>Aún no has realizado ningún pedido.</p>`;
+      html += '<p>No tienes pedidos.</p>';
     }
   }
-
   sec.innerHTML = html;
 }
 
 function showSection(id) {
-  document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+  document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
   document.getElementById(id).style.display = '';
   document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
   document.querySelector(`.navbar a[onclick*="${id}"]`).classList.add('active');
 }
 
-emailjs.init("qWKSfZ8aUnEMTgaL2");
+// Inicializar
+emailjs.init('qWKSfZ8aUnEMTgaL2');
 renderProductos();
 renderCuenta();
