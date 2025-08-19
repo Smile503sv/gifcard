@@ -22,14 +22,7 @@
   <main>
     <section id="productos" class="section">
       <div class="container cards-container" id="products-container"></div>
-
-      <div class="container payment-info">
-        <h3>Formas de Pago</h3>
-        <p>💰 Efectivo o Transferencia bancaria.</p>
-        <p>🛠️ Estamos trabajando para habilitar pagos con tarjeta de crédito/débito próximamente.</p>
-      </div>
     </section>
-
     <section id="contacto" class="section" style="display:none">
       <div class="container">
         <h2>Contacto</h2>
@@ -37,7 +30,6 @@
         <a href="https://wa.me/50379553318" class="btn-whatsapp" target="_blank">WhatsApp</a>
       </div>
     </section>
-
     <section id="cuenta" class="section" style="display:none">
       <div class="container" id="cuenta-content"></div>
     </section>
@@ -55,6 +47,7 @@
   </aside>
   <div class="cart-bg" id="cart-bg" onclick="toggleCart(false)"></div>
 
+  <!-- Modal de autenticación -->
   <div class="modal" id="auth-modal">
     <div class="modal-content">
       <span onclick="closeAuth()" class="modal-close">&times;</span>
@@ -75,7 +68,7 @@
         <button type="submit" class="btn">Continuar</button>
       </form>
       <p id="toggle-auth">
-        ¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>
+        ¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span>
       </p>
     </div>
   </div>
