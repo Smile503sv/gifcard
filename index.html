@@ -1,18 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>DC‑CARDSV BP</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
   <header class="header">
     <div class="container">
-      <img src="assets/logo.png" alt="Logo" style="height:40px; vertical-align:middle;">
       <span class="logo">DC‑CARDSV BP</span>
       <nav class="navbar">
         <a href="#" onclick="showSection('productos')" class="active">Productos</a>
@@ -25,7 +22,14 @@
   <main>
     <section id="productos" class="section">
       <div class="container cards-container" id="products-container"></div>
+
+      <div class="container payment-info">
+        <h3>Formas de Pago</h3>
+        <p>💰 Efectivo o Transferencia bancaria.</p>
+        <p>🛠️ Estamos trabajando para habilitar pagos con tarjeta de crédito/débito próximamente.</p>
+      </div>
     </section>
+
     <section id="contacto" class="section" style="display:none">
       <div class="container">
         <h2>Contacto</h2>
@@ -33,6 +37,7 @@
         <a href="https://wa.me/50379553318" class="btn-whatsapp" target="_blank">WhatsApp</a>
       </div>
     </section>
+
     <section id="cuenta" class="section" style="display:none">
       <div class="container" id="cuenta-content"></div>
     </section>
@@ -71,7 +76,7 @@
         <button type="submit" class="btn">Continuar</button>
       </form>
       <p id="toggle-auth">
-        ¿No tienes cuenta? <span onclick="switchAuth()">Regístrate</span>
+        ¿No tienes cuenta? <span onclick="setAuthMode('register')">Regístrate</span>
       </p>
     </div>
   </div>
